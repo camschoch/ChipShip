@@ -1,4 +1,5 @@
 ﻿using ChipShip.Models;
+using ChipShip.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,16 @@ namespace ChipShip.Controllers
             context.SaveChanges();            
             return View("Test");          
         }
-        public ActionResult TestCallWalmart()
+        public ActionResult TestCallWalmart(string search)
         {
-            StaticClasses.StaticClasses.WalmartApi();
-            return View("Test");
+            WalmartApiViewModel model = new WalmartApiViewModel();
+            model.Items = StaticClasses.StaticClasses.WalmartApi(search);         
+            return View("ShoppingPage", model);
         }
+        //public ActionResult SearchingTags(string search)
+        //{
+        //    var hope = search;
+        //    return View("ShoppingPage");
+        //}
     }
 }

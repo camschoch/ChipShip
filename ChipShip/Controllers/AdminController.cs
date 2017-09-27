@@ -38,9 +38,9 @@ namespace ChipShip.Controllers
             if (applicantRoleName != "Deliverer")
             {
                 var store = new UserStore<ApplicationUser>(context);
-                ApplicationUserManager test = new ApplicationUserManager(store);
-                await test.RemoveFromRolesAsync(applicant.Id, applicantRoleName);
-                await test.AddToRoleAsync(applicant.Id, "Deliverer");
+                ApplicationUserManager Manager = new ApplicationUserManager(store);
+                await Manager.RemoveFromRolesAsync(applicant.Id, applicantRoleName);
+                await Manager.AddToRoleAsync(applicant.Id, "Deliverer");
             }
             applicant.ApplyToDeliverer = false;
             context.SaveChanges();

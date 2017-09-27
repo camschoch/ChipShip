@@ -1,0 +1,21 @@
+﻿@model ChipShip.Models.ViewModels.WalmartApiViewModel
+@{
+    ViewBag.Title = "ShoppingPage";
+}
+
+<h2>ShoppingPage</h2>
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Results</th>
+        <th>Add to cart</th>
+    </tr>
+    @foreach (var d in Model.Items)
+    {
+        <tr>
+            <td>@Html.DisplayFor(temp => d.name )</td>
+            <td>@Html.ActionLink("Add to Cart", "ShowMarkerMarkets", "Map", new {  }, null)</td>
+        </tr>
+
+    }
+</table>  

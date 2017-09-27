@@ -24,5 +24,10 @@ namespace ChipShip.Controllers
             context.SaveChanges();            
             return View("Test");          
         }
+        public ActionResult TestCallWalmart()
+        {
+            StaticClasses.StaticClasses.WalmartApi();
+            return View("Test");
+        }
     }
 }

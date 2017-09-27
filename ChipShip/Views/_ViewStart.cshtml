@@ -1,3 +1,18 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (User.IsInRole("RegisteredUser"))
+    {
+        Layout = "~/Views/Shared/RegisteredUser_Layout.cshtml";
+    }
+    else if (User.IsInRole("Deliverer"))
+    {
+        Layout = "~/Views/Shared/Deliverer_Layout.cshtml";
+    }
+    else if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/Admin_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }

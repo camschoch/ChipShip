@@ -1,0 +1,22 @@
+﻿@model ChipShip.Models.ViewModels.ApproveViewModel
+@{
+    ViewBag.Title = "ApproveDeliverer";
+}
+
+<h2>ApproveDeliverer</h2>
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>To Be Approved</th>
+        <th>Approve Applicant</th>
+    </tr>
+    @foreach (var d in Model.toBeApproved)
+    {
+        <tr>
+            <td>@Html.DisplayFor(temp => d.UserName)</td>
+            <td>@Html.ActionLink("Approve", "ApproveDelivererPost", "Admin", new { Id = d.Id }, null)</td>
+        </tr>
+
+    }
+</table>
+  
+

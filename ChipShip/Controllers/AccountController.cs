@@ -151,8 +151,17 @@ namespace ChipShip.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationDbContext context = new ApplicationDbContext();
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                ShoppingCartModel shoppingCart = new ShoppingCartModel();
+                context.ShopingCarts.Add(shoppingCart);
+                context.SaveChanges();
+                ShoppingCartJoinModel ShoppingCartJoin = new ShoppingCartJoinModel();
+                ShoppingCartJoin.shoppingCart = shoppingCart;
+                ShoppingCartJoin.User = context.Users.Where(a => a.Email == user.Email).First();
+                context.ShoppingcartJoin.Add(ShoppingCartJoin);
+                context.SaveChanges();
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -171,39 +180,7 @@ namespace ChipShip.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        //public ActionResult RegisterDeliverer()
-        //{
-        //    return View("Register");
-        //}
-
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> RegisterDeliverer(RegisterViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-        //        var result = await UserManager.CreateAsync(user, model.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-        //            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-        //            // Send an email with this link
-        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-        //            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-        //            await UserManager.AddToRoleAsync(user.Id, "Deliverer");
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        AddErrors(result);
-        //    }
-
-            // If we got this far, something failed, redisplay form
-            //return View(model);
-        //}
-        //
+        
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)

@@ -33,7 +33,12 @@
             </div>
           @using (Html.BeginForm("TestCallWalmart", "RegisteredUser", FormMethod.Get))
           {
-                @Html.TextBox("search")            <button type="submit">Search</button>
+            <style>
+                button {
+                    color: black;
+                }
+            </style>
+            @Html.TextBox("search")<button type="submit">Search</button>
           }
         </div>
     </div>

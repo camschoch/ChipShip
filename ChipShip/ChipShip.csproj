@@ -238,10 +238,24 @@
     <Compile Include="Migrations\201709270143589_testing adding manager enable.Designer.cs">
       <DependentUpon>201709270143589_testing adding manager enable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709271907127_added shopping cart and shoppingcart join.cs" />
+    <Compile Include="Migrations\201709271907127_added shopping cart and shoppingcart join.Designer.cs">
+      <DependentUpon>201709271907127_added shopping cart and shoppingcart join.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709272026583_took out shoppingcart join.cs" />
+    <Compile Include="Migrations\201709272026583_took out shoppingcart join.Designer.cs">
+      <DependentUpon>201709272026583_took out shoppingcart join.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709272045285_added back in shoppingcart join.cs" />
+    <Compile Include="Migrations\201709272045285_added back in shoppingcart join.Designer.cs">
+      <DependentUpon>201709272045285_added back in shoppingcart join.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ShoppingCartModel.cs" />
+    <Compile Include="Models\ShoppingCartJoinModel.cs" />
     <Compile Include="Models\ViewModels\ApproveViewModel.cs" />
     <Compile Include="Models\ViewModels\WalmartApiViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -349,6 +363,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709270143589_testing adding manager enable.resx">
       <DependentUpon>201709270143589_testing adding manager enable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709271907127_added shopping cart and shoppingcart join.resx">
+      <DependentUpon>201709271907127_added shopping cart and shoppingcart join.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709272026583_took out shoppingcart join.resx">
+      <DependentUpon>201709272026583_took out shoppingcart join.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709272045285_added back in shoppingcart join.resx">
+      <DependentUpon>201709272045285_added back in shoppingcart join.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

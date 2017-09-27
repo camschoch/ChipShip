@@ -30,5 +30,7 @@ namespace ChipShip.Models
         {
             return new ApplicationDbContext();
         }
+        public DbSet<ShoppingCartModel> ShopingCarts { get; set; }
+        public DbSet<ShoppingCartJoinModel> ShoppingcartJoin { get; set; }
     }
 }

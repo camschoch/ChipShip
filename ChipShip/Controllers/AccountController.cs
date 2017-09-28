@@ -153,15 +153,7 @@ namespace ChipShip.Controllers
             {
                 ApplicationDbContext context = new ApplicationDbContext();
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                ShoppingCartModel shoppingCart = new ShoppingCartModel();
-                context.ShopingCarts.Add(shoppingCart);
-                context.SaveChanges();
-                ShoppingCartJoinModel ShoppingCartJoin = new ShoppingCartJoinModel();
-                ShoppingCartJoin.shoppingCart = shoppingCart;
-                ShoppingCartJoin.User = context.Users.Where(a => a.Email == user.Email).First();
-                context.ShoppingcartJoin.Add(ShoppingCartJoin);
-                context.SaveChanges();
+                var result = await UserManager.CreateAsync(user, model.Password);               
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);

@@ -1,23 +1,21 @@
 ﻿@model ChipShip.Models.ViewModels.WalmartApiViewModel
 @{
-    ViewBag.Title = "ShoppingPage";
+    ViewBag.Title = "ShoppingCart";
 }
 
-<h2>ShoppingPage</h2>
-
+<h2>ShoppingCart</h2>
 <table class="table table-bordered table-responsive table-hover">
     <tr>
         <th>Results</th>
         <th>Price</th>
-        <th>Add to cart</th>
     </tr>
     @foreach (var d in Model.Items)
     {
         <tr>
-            <td>@Html.DisplayFor(temp => d.name )</td>
+            <td>@Html.DisplayFor(temp => d.name)</td>
             <td>@Html.DisplayFor(temp => d.salePrice)</td>
-            <td>@Html.ActionLink("Add to Cart", "AddToCart", "RegisteredUser", new { itemId = d.itemId }, null)</td>
         </tr>
 
     }
-</table>  
+</table>
+  

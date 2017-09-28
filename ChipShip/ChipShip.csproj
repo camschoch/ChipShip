@@ -250,6 +250,10 @@
     <Compile Include="Migrations\201709272045285_added back in shoppingcart join.Designer.cs">
       <DependentUpon>201709272045285_added back in shoppingcart join.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709281441036_updated shopping cart table.cs" />
+    <Compile Include="Migrations\201709281441036_updated shopping cart table.Designer.cs">
+      <DependentUpon>201709281441036_updated shopping cart table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -342,6 +346,7 @@
     <Content Include="Views\Admin\ApproveDeliverer.cshtml" />
     <Content Include="Views\RegisteredUser\Test.cshtml" />
     <Content Include="Views\RegisteredUser\ShoppingPage.cshtml" />
+    <Content Include="Views\RegisteredUser\ShoppingCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -372,6 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709272045285_added back in shoppingcart join.resx">
       <DependentUpon>201709272045285_added back in shoppingcart join.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709281441036_updated shopping cart table.resx">
+      <DependentUpon>201709281441036_updated shopping cart table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

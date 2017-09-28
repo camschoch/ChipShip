@@ -13,6 +13,5 @@ namespace ChipShip.Models
         public int Id { get; set; }
         public int itemId { get; set; }
         public int amount { get; set; }       
-        public ApplicationUser User {get;set;}
     }
 }

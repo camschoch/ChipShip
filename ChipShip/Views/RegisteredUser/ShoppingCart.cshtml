@@ -1,21 +1,33 @@
-﻿@model ChipShip.Models.ViewModels.WalmartApiViewModel
+﻿@model ChipShip.Models.ViewModels.ViewShoppingCart
 @{
     ViewBag.Title = "ShoppingCart";
 }
 
 <h2>ShoppingCart</h2>
-<table class="table table-bordered table-responsive table-hover">
-    <tr>
-        <th>Results</th>
-        <th>Price</th>
-    </tr>
-    @foreach (var d in Model.Items)
-    {
+@using (Html.BeginForm("SubmitOrder", "RegisteredUser", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <table class="table table-bordered table-responsive table-hover">
         <tr>
-            <td>@Html.DisplayFor(temp => d.name)</td>
-            <td>@Html.DisplayFor(temp => d.salePrice)</td>
-        </tr>
-
-    }
-</table>
-  
+            <th>Results</th>
+            <th>Price</th>
+            <th>Remove From Cart</th>
+      </tr>
+      @foreach (var d in Model.shoppingCart)
+      {
+          foreach (var item in d)
+          {
+          <tr>
+             <td>@Html.DisplayFor(temp => d[0].name)</td>
+             <td>@Html.DisplayFor(temp => d[0].salePrice)</td>
+             <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrice }, null)</td>
+         </tr>
+         }
+    
+     }
+    </table>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+          <input type="submit" class="btn btn-default" value="Submit Order" />
+      </div>
+    </div>
+}

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ChipShip.Models;
+using static ChipShip.Models.ViewModels.OrderRequestViewModel;
 
 namespace ChipShip.Controllers
 {
@@ -153,7 +154,12 @@ namespace ChipShip.Controllers
             {
                 ApplicationDbContext context = new ApplicationDbContext();
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);               
+                var result = await UserManager.CreateAsync(user, model.Password);
+                var order = new OrderRequest();
+                order.ActiveOrder = false;
+                order.User = context.Users.Where(a => a.Id == user.Id).First();
+                context.OrderRequest.Add(order);
+                context.SaveChanges();
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);

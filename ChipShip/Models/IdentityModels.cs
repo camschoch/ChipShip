@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using ChipShip.Models.ViewModels;
+using static ChipShip.Models.ViewModels.OrderRequestViewModel;
 
 namespace ChipShip.Models
 {
@@ -32,5 +34,6 @@ namespace ChipShip.Models
         }
         public DbSet<ShoppingCartModel> ShopingCarts { get; set; }
         public DbSet<ShoppingCartJoinModel> ShoppingcartJoin { get; set; }
+        public DbSet<OrderRequest> OrderRequest { get; set; }
     }
 }

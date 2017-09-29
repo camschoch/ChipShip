@@ -16,8 +16,8 @@
         <tr>
             <td>@Html.DisplayFor(temp => d.name )</td>
             <td>@Html.DisplayFor(temp => d.salePrice)</td>
-            <td>@Html.ActionLink("Add to Cart", "AddToCart", "RegisteredUser", new { itemId = d.itemId }, null)</td>
+            <td>@Html.ActionLink("Add to Cart", "AddToCart", "RegisteredUser", new { itemId = d.itemId, name = d.name, salePrice = d.salePrice }, null)</td>
         </tr>
 
     }
-</table>  
+</table>

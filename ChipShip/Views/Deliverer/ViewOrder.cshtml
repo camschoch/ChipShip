@@ -1,0 +1,23 @@
+﻿@model ChipShip.Models.ViewModels.OrderRequestViewModel
+
+@{
+    ViewBag.Title = "ViewOrder";
+}
+
+<h2>ViewOrder</h2>
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Product name</th>
+        <th>Amount Ordered</th>
+        <th>Price</th>
+    </tr>
+    @foreach (var d in Model.OrderRequestLists)
+    {
+        <tr>
+            <td>@Html.DisplayFor(temp => d.shoppingCart.name)</td>
+            <td>@Html.DisplayFor(temp => d.shoppingCart.amount)</td>
+            <td>@Html.DisplayFor(temp => d.shoppingCart.salePrice)</td>
+        </tr>
+    }
+</table>

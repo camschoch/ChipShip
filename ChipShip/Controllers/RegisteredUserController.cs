@@ -31,7 +31,7 @@ namespace ChipShip.Controllers
             model.Items = StaticClasses.StaticClasses.WalmartSearchApi(search);         
             return View("ShoppingPage", model);
         }
-        public ActionResult AddToCart(int itemId)
+        public ActionResult AddToCart(int itemId, string name, float salePrice)
         {
             ApplicationDbContext context = new ApplicationDbContext();
             List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
@@ -39,7 +39,7 @@ namespace ChipShip.Controllers
             var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id).ToList();
             foreach (var item in myCartId)
             {
-                shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.ID).ToList());
+                shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.Id).ToList());
             }
             foreach (var item in shoppingCarts)
             {
@@ -53,6 +53,9 @@ namespace ChipShip.Controllers
                     }
                     else if (thing.itemId == 0)
                     {
+                        thing.amount = 1;
+                        thing.name = name;
+                        thing.salePrice = salePrice;
                         thing.itemId = itemId;
                         context.SaveChanges();
                         return View("Test");
@@ -61,6 +64,9 @@ namespace ChipShip.Controllers
             }
             ShoppingCartModel shoppingCart = new ShoppingCartModel();
             shoppingCart.itemId = itemId;
+            shoppingCart.name = name;
+            shoppingCart.salePrice = salePrice;
+            shoppingCart.amount = 1;
             context.ShopingCarts.Add(shoppingCart);           
             context.SaveChanges();
             ShoppingCartJoinModel ShoppingCartJoin = new ShoppingCartJoinModel();
@@ -71,14 +77,41 @@ namespace ChipShip.Controllers
 
             return View("Test");
         }
-        //MAKE GET FOR DISPLAYING SHOPPING CART 
+        public ActionResult RemoveFromCart(int itemId, string name, float salePrice)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+          
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id);
+            var removingFromCart = myCartId.Where(a => a.shoppingCart.itemId == itemId).First();
+            context.ShoppingcartJoin.Remove(removingFromCart);
+            context.SaveChanges();
+            return View("Test");
+        }
 
-
-
-        //public ActionResult SearchingTags(string search)
-        //{
-        //    var hope = search;
-        //    return View("ShoppingPage");
-        //}
+        public ActionResult DisplayShoppingCart()
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id).ToList();
+            foreach (var item in myCartId)
+            {
+                shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.Id).ToList());
+            }
+            ViewShoppingCart model = new ViewShoppingCart();
+            model.shoppingCart = shoppingCarts;
+            return View("ShoppingCart", model);
+        }
+        [HttpPost]
+        public ActionResult SubmitOrder()
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            var myOrderId = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();
+            myOrderId.ActiveOrder = true;
+            context.SaveChanges();
+            return View("Test");
+        }
     }
 }

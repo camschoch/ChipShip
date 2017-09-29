@@ -1,0 +1,20 @@
+﻿@model ChipShip.Models.ViewModels.OrderRequestViewModel
+@{
+    ViewBag.Title = "OrderRequests";
+}
+
+<h2>OrderRequests</h2>
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>User</th>
+        <th>See Order</th>
+    </tr>
+    @foreach (var d in Model.Users)
+    {
+        <tr>
+            <td>@Html.DisplayFor(temp => d.Email )</td>
+            <td>@Html.ActionLink("See Order", "SeeOrder", "Deliverer", new { userId = d.Id }, null)</td>
+        </tr>
+    }
+</table>

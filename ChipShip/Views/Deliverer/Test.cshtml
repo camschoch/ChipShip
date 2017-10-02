@@ -1,0 +1,12 @@
+﻿@model ChipShip.Models.DelivererGeoLocationModel
+@{
+    ViewBag.Title = "Test";
+}
+
+<h2>Test</h2>
+@section scripts {
+    @Scripts.Render("~/Scripts/CurrentGeoLocation.js")
+    }
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co&callback=initMap">
+    </script>

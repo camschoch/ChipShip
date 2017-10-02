@@ -6,18 +6,27 @@
 
 <h2>ViewOrder</h2>
 
-<table class="table table-bordered table-responsive table-hover">
-    <tr>
-        <th>Product name</th>
-        <th>Amount Ordered</th>
-        <th>Price</th>
-    </tr>
-    @foreach (var d in Model.OrderRequestLists)
-    {
+    <table class="table table-bordered table-responsive table-hover">
         <tr>
-            <td>@Html.DisplayFor(temp => d.shoppingCart.name)</td>
-            <td>@Html.DisplayFor(temp => d.shoppingCart.amount)</td>
-            <td>@Html.DisplayFor(temp => d.shoppingCart.salePrice)</td>
+            <th>Product name</th>
+            <th>Amount Ordered</th>
+            <th>Price</th>
         </tr>
-    }
-</table>
+      @foreach (var d in Model.OrderRequestLists)
+      {
+         <tr>
+             <td>@Html.DisplayFor(temp => d.shoppingCart.name)</td>
+             <td>@Html.DisplayFor(temp => d.shoppingCart.amount)</td>
+             <td>@Html.DisplayFor(temp => d.shoppingCart.salePrices)</td>
+         </tr>
+      }
+         <tr>
+             <th>Total Price</th>
+             <th>Accept Order</th>
+         </tr>
+      <tr>
+         <td>@Model.TotalPrice</td>
+         <td>@Html.ActionLink("Accept Order", "AcceptOrder", "Deliverer", new { userId = Model.userId }, null)</td>
+     </tr>
+    </table>
+

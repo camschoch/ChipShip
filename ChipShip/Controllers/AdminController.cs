@@ -41,6 +41,10 @@ namespace ChipShip.Controllers
                 ApplicationUserManager Manager = new ApplicationUserManager(store);
                 await Manager.RemoveFromRolesAsync(applicant.Id, applicantRoleName);
                 await Manager.AddToRoleAsync(applicant.Id, "Deliverer");
+                DelivererGeoLocationModel DelivererGeoLocation = new DelivererGeoLocationModel();
+                DelivererGeoLocation.User = applicant;
+                DelivererGeoLocation.tracking = false;
+                context.DelivererGeoLocation.Add(DelivererGeoLocation);         
             }
             applicant.ApplyToDeliverer = false;
             context.SaveChanges();

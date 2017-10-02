@@ -266,8 +266,34 @@
     <Compile Include="Migrations\201709282015595_added OrderRequest.Designer.cs">
       <DependentUpon>201709282015595_added OrderRequest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709291312198_adding addresses.cs" />
+    <Compile Include="Migrations\201709291312198_adding addresses.Designer.cs">
+      <DependentUpon>201709291312198_adding addresses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709291348097_took out cloumn from address.cs" />
+    <Compile Include="Migrations\201709291348097_took out cloumn from address.Designer.cs">
+      <DependentUpon>201709291348097_took out cloumn from address.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709291729089_added orders table.cs" />
+    <Compile Include="Migrations\201709291729089_added orders table.Designer.cs">
+      <DependentUpon>201709291729089_added orders table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709292148058_added DelivererGeoLocationModel.cs" />
+    <Compile Include="Migrations\201709292148058_added DelivererGeoLocationModel.Designer.cs">
+      <DependentUpon>201709292148058_added DelivererGeoLocationModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710012255173_fixing db error.cs" />
+    <Compile Include="Migrations\201710012255173_fixing db error.Designer.cs">
+      <DependentUpon>201710012255173_fixing db error.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ActiveOrders.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\DelivererGeoLocationModel.cs" />
+    <Compile Include="Models\Orders.cs" />
+    <Compile Include="Models\StatusModel.cs" />
+    <Compile Include="Models\UserAddress.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\ApproveViewModel.cs" />
@@ -317,6 +343,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\CurrentGeoLocation.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -361,6 +388,10 @@
     <Content Include="Views\RegisteredUser\ShoppingCart.cshtml" />
     <Content Include="Views\Deliverer\OrderRequests.cshtml" />
     <Content Include="Views\Deliverer\ViewOrder.cshtml" />
+    <Content Include="Views\RegisteredUser\Address.cshtml" />
+    <Content Include="Views\Deliverer\Test.cshtml" />
+    <Content Include="Views\RegisteredUser\Index.cshtml" />
+    <Content Include="Views\Deliverer\ActiveOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -402,6 +433,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709282015595_added OrderRequest.resx">
       <DependentUpon>201709282015595_added OrderRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709291312198_adding addresses.resx">
+      <DependentUpon>201709291312198_adding addresses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709291348097_took out cloumn from address.resx">
+      <DependentUpon>201709291348097_took out cloumn from address.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709291729089_added orders table.resx">
+      <DependentUpon>201709291729089_added orders table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709292148058_added DelivererGeoLocationModel.resx">
+      <DependentUpon>201709292148058_added DelivererGeoLocationModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710012255173_fixing db error.resx">
+      <DependentUpon>201710012255173_fixing db error.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -159,6 +159,10 @@ namespace ChipShip.Controllers
                 order.ActiveOrder = false;
                 order.User = context.Users.Where(a => a.Id == user.Id).First();
                 context.OrderRequest.Add(order);
+                StatusModel orderStatus = new StatusModel();
+                orderStatus.status = "No order in progress.";
+                orderStatus.User = context.Users.Where(a => a.Id == user.Id).First();
+                context.OrderStatus.Add(orderStatus);
                 context.SaveChanges();
                 if (result.Succeeded)
                 {

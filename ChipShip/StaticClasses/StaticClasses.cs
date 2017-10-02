@@ -33,5 +33,13 @@ namespace ChipShip.StaticClasses
             IRestResponse<ItemsItems> response = client.Execute<ItemsItems>(request);
 
         }
+        static public void GoogleGeoLocationApi()
+        {
+            var client = new RestClient("https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co&callback=initMap");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("postman-token", "e49f12cb-fa48-1ab3-1b57-515073ff0395");
+            request.AddHeader("cache-control", "no-cache");
+            IRestResponse response = client.Execute(request);
+        }
     }
 }

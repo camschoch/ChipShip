@@ -1,0 +1,40 @@
+﻿@model ChipShip.Models.ViewModels.ViewShoppingCart
+@{
+    ViewBag.Title = "ActiveOrders";
+}
+@using (Html.BeginForm("PurchasedOrder", "Deliverer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<h2>@Model.UserName</h2>
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Results</th>
+        <th>Price</th>
+        <th>Amount</th>
+        <th>Remove From Cart</th>
+    </tr>
+    @foreach (var d in Model.shoppingCart)
+    {
+        foreach (var item in d)
+        {
+            <tr>
+                <td>@Html.DisplayFor(temp => d[0].name)</td>
+                <td>@Html.DisplayFor(temp => d[0].salePrices)</td>
+                <td>@Html.DisplayFor(temp => d[0].amount)</td>
+                <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>
+            </tr>
+        }
+    }
+    <tr>
+        <th>Total Price</th>
+    </tr>
+    <tr>
+        <th>@Model.TotalPrice</th>
+    </tr>
+</table>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" class="btn btn-default" value="Submit Order" />
+    </div>
+</div>
+}

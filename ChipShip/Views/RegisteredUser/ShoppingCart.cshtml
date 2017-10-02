@@ -10,6 +10,7 @@
         <tr>
             <th>Results</th>
             <th>Price</th>
+            <th>Amount</th>
             <th>Remove From Cart</th>
       </tr>
       @foreach (var d in Model.shoppingCart)
@@ -18,12 +19,18 @@
           {
           <tr>
              <td>@Html.DisplayFor(temp => d[0].name)</td>
-             <td>@Html.DisplayFor(temp => d[0].salePrice)</td>
-             <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrice }, null)</td>
+             <td>@Html.DisplayFor(temp => d[0].salePrices)</td>
+              <td>@Html.DisplayFor(temp => d[0].amount )</td>
+             <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>
          </tr>
-         }
-    
-     }
+          }
+      }
+        <tr>
+            <th>Total Price</th>
+        </tr>
+        <tr>
+            <th>@Model.TotalPrice</th>
+        </tr>      
     </table>
     <div class="form-group">
       <div class="col-md-offset-2 col-md-10">

@@ -1,10 +1,9 @@
 ﻿@model ChipShip.Models.ViewModels.ViewShoppingCart
 @{
-    ViewBag.Title = "ActiveOrders";
+    ViewBag.Title = "OrderInProgress";
 }
-@using (Html.BeginForm("PurchasedOrder", "Deliverer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-<h2>@Model.UserName</h2>
+
+<h2>OrderInProgress</h2>
 
 <table class="table table-bordered table-responsive table-hover">
     <tr>
@@ -32,10 +31,3 @@
         <th>@Model.TotalPrice</th>
     </tr>
 </table>
-<div class="form-group">
-    @Html.HiddenFor(m => m.userId )
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" class="btn btn-default" value="Submit Order" />
-    </div>
-</div>
-}

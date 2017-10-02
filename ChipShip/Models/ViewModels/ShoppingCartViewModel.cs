@@ -11,6 +11,7 @@ namespace ChipShip.Models.ViewModels
         public List<List<ShoppingCartModel>> shoppingCart { get; set; }
         public double TotalPrice { get; set; }
         public string UserName { get; set; }
+        public string userId { get; set; }
     }
     public class ShoppingCartModel
     {

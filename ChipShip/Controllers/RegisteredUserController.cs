@@ -101,8 +101,9 @@ namespace ChipShip.Controllers
 
         public ActionResult DisplayShoppingCart()
         {
-            List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            var currentOrder = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();                     
+            List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();          
             var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id).ToList();
             foreach (var item in myCartId)
             {
@@ -119,7 +120,14 @@ namespace ChipShip.Controllers
                     model.TotalPrice = Math.Round(roundedPrice, 2);             
                 }                             
             }
-            return View("ShoppingCart", model);
+            if (currentOrder.ActiveOrder == true)
+            {
+                return View("OrderInProgress", model);
+            }
+            else
+            {
+                return View("ShoppingCart", model);
+            }
         }
         [HttpPost]
         public ActionResult SubmitOrder()
@@ -132,7 +140,7 @@ namespace ChipShip.Controllers
             myOrderStatus.status = "Waiting to be approved by deliverer.";
             context.SaveChanges();
             return View("Test");
-        }
+        }        
         public ActionResult CreateAddress()
         {
             return View("Address");
@@ -160,8 +168,11 @@ namespace ChipShip.Controllers
         }
         private Address GetAddress(Address model)
         {
+            var currentUser = context.Users.Where(a => a.UserName == User.Identity.Name).First();
             model.City = GetCity(model);
             model.Zip = GetZip(model);
+            model.Lattitude = StaticClasses.StaticClasses.GoogleGeoLocationApi(model.addressLine, model.Zip.zip, currentUser.Id)[0];
+            model.Longitude = StaticClasses.StaticClasses.GoogleGeoLocationApi(model.addressLine, model.Zip.zip, currentUser.Id)[1];
             //model.Zone = StaticClasses.ApiCalls.CurrentZoneApi(model.Zip.zip.ToString());
             var addresses = (from data in context.Addresses where data.addressLine == model.addressLine && data.City.City == model.City.City && data.Zip.zip == model.Zip.zip select data).ToList();
             if (addresses.Count > 0)

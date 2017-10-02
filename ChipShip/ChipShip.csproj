@@ -286,11 +286,16 @@
     <Compile Include="Migrations\201710012255173_fixing db error.Designer.cs">
       <DependentUpon>201710012255173_fixing db error.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710021416128_order status .cs" />
+    <Compile Include="Migrations\201710021416128_order status .Designer.cs">
+      <DependentUpon>201710021416128_order status .cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveOrders.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\DelivererGeoLocationModel.cs" />
+    <Compile Include="Models\GeoLocationData.cs" />
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\StatusModel.cs" />
     <Compile Include="Models\UserAddress.cs" />
@@ -392,6 +397,8 @@
     <Content Include="Views\Deliverer\Test.cshtml" />
     <Content Include="Views\RegisteredUser\Index.cshtml" />
     <Content Include="Views\Deliverer\ActiveOrders.cshtml" />
+    <Content Include="Views\RegisteredUser\OrderInProgress.cshtml" />
+    <Content Include="Views\Deliverer\UserAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -448,6 +455,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710012255173_fixing db error.resx">
       <DependentUpon>201710012255173_fixing db error.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710021416128_order status .resx">
+      <DependentUpon>201710021416128_order status .cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

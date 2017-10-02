@@ -18,7 +18,7 @@ namespace ChipShip.Controllers
         }
         public ActionResult Test()
         {
-            StaticClasses.StaticClasses.GoogleGeoLocationApi();
+            //StaticClasses.StaticClasses.GoogleGeoLocationApi();
             DelivererGeoLocationModel model = new DelivererGeoLocationModel();            
             return View(model);
         }
@@ -65,8 +65,8 @@ namespace ChipShip.Controllers
             else
             {
                 var customer = context.Users.Where(a => a.Id == userId).First();
-                var orderRequestStatus = context.OrderRequest.Where(a => a.User.Id == customer.Id).First();
-                orderRequestStatus.ActiveOrder = false;
+                //var orderRequestStatus = context.OrderRequest.Where(a => a.User.Id == customer.Id).First();
+                //orderRequestStatus.ActiveOrder = false;
                 Orders newOrder = new Orders();
                 newOrder.completed = false;
                 newOrder.Deliverer = context.Users.Where(a => a.UserName == User.Identity.Name).First();
@@ -102,6 +102,7 @@ namespace ChipShip.Controllers
             ViewShoppingCart model = new ViewShoppingCart();
             model.shoppingCart = shoppingCarts;
             model.UserName = activeOrders.User.UserName;
+            model.userId = activeOrders.User.Id;
             double roundedPrice = 0;
             foreach (var item in model.shoppingCart)
             {
@@ -113,9 +114,16 @@ namespace ChipShip.Controllers
             }          
             return View("ActiveOrders", model);
         }
-        public ActionResult PurchasedOrder()
+        [HttpPost]
+        public ActionResult PurchasedOrder(string userId)
         {
-
+            var customer = context.Users.Where(a => a.Id == userId).First();
+            var customerOrderStatus = context.OrderStatus.Where(a => a.User.Id == userId).First();
+            customerOrderStatus.status = "Order has been purchased and is out for dilivary.";
+            return View("UserAddress");
+        }
+        public ActionResult UserAddress()
+        {
             return View();
         }
     }

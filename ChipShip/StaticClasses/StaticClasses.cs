@@ -1,4 +1,5 @@
-﻿using ChipShip.Models.ViewModels;
+﻿using ChipShip.Models;
+using ChipShip.Models.ViewModels;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -33,13 +34,26 @@ namespace ChipShip.StaticClasses
             IRestResponse<ItemsItems> response = client.Execute<ItemsItems>(request);
 
         }
-        static public void GoogleGeoLocationApi()
+        static public List<float> GoogleGeoLocationApi(string address, int zip, string userId)
         {
-            var client = new RestClient("https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co&callback=initMap");
+            var formatted = address.Replace(" ", "+");
+            List<float> location = new List<float>();
+            //1600%20Amphitheatre%20Parkway%2C%20Mountain%20View%2C%20CA
+            //address = "1600+Amphitheatre+Parkway+Mountain+View";
+            var client = new RestClient("https://maps.googleapis.com/maps/api/geocode/json?address=" + formatted + "+" + zip.ToString() + "&key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co");
             var request = new RestRequest(Method.GET);
-            request.AddHeader("postman-token", "e49f12cb-fa48-1ab3-1b57-515073ff0395");
+            request.AddHeader("postman-token", "a37a2571-49a6-362e-a4b1-54e5ff540d63");
             request.AddHeader("cache-control", "no-cache");
-            IRestResponse response = client.Execute(request);
+            IRestResponse<GeoLocationData> response = client.Execute<GeoLocationData>(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var lattitude = response.Data.results[0].geometry[0].location[0].lat;
+                var longitude = response.Data.results[0].geometry[0].location[0].lng;
+                location.Add(lattitude);
+                location.Add(longitude);
+                return location;
+            }
+            return null;
         }
     }
 }

@@ -122,6 +122,10 @@ namespace ChipShip.Controllers
             }
             if (currentOrder.ActiveOrder == true)
             {
+                var test = context.OrderRequest.Include("Deliverer").Where(a => a.User.Id == currentUser.Id).First();
+                var mapData = context.DelivererGeoLocation.Where(a => a.User.Id == test.Deliverer.Id).First();
+                model.lat = mapData.lat;
+                model.lng = mapData.lng;     
                 return View("OrderInProgress", model);
             }
             else
@@ -140,7 +144,7 @@ namespace ChipShip.Controllers
             myOrderStatus.status = "Waiting to be approved by deliverer.";
             context.SaveChanges();
             return View("Test");
-        }        
+        }
         public ActionResult CreateAddress()
         {
             return View("Address");

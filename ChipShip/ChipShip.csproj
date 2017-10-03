@@ -290,6 +290,22 @@
     <Compile Include="Migrations\201710021416128_order status .Designer.cs">
       <DependentUpon>201710021416128_order status .cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710021919413_added deliverer to order request.cs" />
+    <Compile Include="Migrations\201710021919413_added deliverer to order request.Designer.cs">
+      <DependentUpon>201710021919413_added deliverer to order request.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710031657568_changed float to decimal.cs" />
+    <Compile Include="Migrations\201710031657568_changed float to decimal.Designer.cs">
+      <DependentUpon>201710031657568_changed float to decimal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710031939075_changed decimal to string.cs" />
+    <Compile Include="Migrations\201710031939075_changed decimal to string.Designer.cs">
+      <DependentUpon>201710031939075_changed decimal to string.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710032006490_changed decimal to string again.cs" />
+    <Compile Include="Migrations\201710032006490_changed decimal to string again.Designer.cs">
+      <DependentUpon>201710032006490_changed decimal to string again.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveOrders.cs" />
@@ -343,6 +359,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Map.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -458,6 +475,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710021416128_order status .resx">
       <DependentUpon>201710021416128_order status .cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710021919413_added deliverer to order request.resx">
+      <DependentUpon>201710021919413_added deliverer to order request.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710031657568_changed float to decimal.resx">
+      <DependentUpon>201710031657568_changed float to decimal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710031939075_changed decimal to string.resx">
+      <DependentUpon>201710031939075_changed decimal to string.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710032006490_changed decimal to string again.resx">
+      <DependentUpon>201710032006490_changed decimal to string again.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

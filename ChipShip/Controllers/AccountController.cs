@@ -157,7 +157,7 @@ namespace ChipShip.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 var order = new OrderRequest();
                 order.ActiveOrder = false;
-                order.User = context.Users.Where(a => a.Id == user.Id).First();
+                order.User = context.Users.Where(a => a.Id == user.Id).First();                
                 context.OrderRequest.Add(order);
                 StatusModel orderStatus = new StatusModel();
                 orderStatus.status = "No order in progress.";

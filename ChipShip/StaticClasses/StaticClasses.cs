@@ -34,10 +34,10 @@ namespace ChipShip.StaticClasses
             IRestResponse<ItemsItems> response = client.Execute<ItemsItems>(request);
 
         }
-        static public List<float> GoogleGeoLocationApi(string address, int zip, string userId)
+        static public List<string> GoogleGeoLocationApi(string address, int zip, string userId)
         {
             var formatted = address.Replace(" ", "+");
-            List<float> location = new List<float>();
+            List<string> location = new List<string>();
             //1600%20Amphitheatre%20Parkway%2C%20Mountain%20View%2C%20CA
             //address = "1600+Amphitheatre+Parkway+Mountain+View";
             var client = new RestClient("https://maps.googleapis.com/maps/api/geocode/json?address=" + formatted + "+" + zip.ToString() + "&key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co");
@@ -49,8 +49,8 @@ namespace ChipShip.StaticClasses
             {
                 var lattitude = response.Data.results[0].geometry[0].location[0].lat;
                 var longitude = response.Data.results[0].geometry[0].location[0].lng;
-                location.Add(lattitude);
-                location.Add(longitude);
+                location.Add(lattitude.ToString());
+                location.Add(longitude.ToString());
                 return location;
             }
             return null;

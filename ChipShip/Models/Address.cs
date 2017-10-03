@@ -12,8 +12,8 @@ namespace ChipShip.Models
         public int ID { get; set; }
         [Display(Name = "Address")]
         public string addressLine { get; set; }
-        public float Lattitude { get; set; }
-        public float Longitude { get; set; }
+        public string Lattitude { get; set; }
+        public string Longitude { get; set; }
         public Cities City { get; set; }
         public ZipCode Zip { get; set; }
     }

@@ -22,6 +22,7 @@ namespace ChipShip.Models.ViewModels
         {
             public int Id { get; set; }
             public ApplicationUser User { get; set; }
+            public ApplicationUser Deliverer { get; set; }
             public bool ActiveOrder { get; set; }
         }
     }

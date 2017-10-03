@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static ChipShip.Models.ViewModels.OrderRequestViewModel;
 
 namespace ChipShip.Controllers
 {
@@ -67,6 +68,8 @@ namespace ChipShip.Controllers
                 var customer = context.Users.Where(a => a.Id == userId).First();
                 //var orderRequestStatus = context.OrderRequest.Where(a => a.User.Id == customer.Id).First();
                 //orderRequestStatus.ActiveOrder = false;
+                var thing = context.OrderRequest.Where(a => a.User.Id == userId).First();
+                thing.Deliverer = currentUser;                
                 Orders newOrder = new Orders();
                 newOrder.completed = false;
                 newOrder.Deliverer = context.Users.Where(a => a.UserName == User.Identity.Name).First();
@@ -84,8 +87,8 @@ namespace ChipShip.Controllers
         {
             var currentUser = context.Users.Where(a => a.UserName == User.Identity.Name).First();
             var delivererGeoLocation = context.DelivererGeoLocation.Where(a => a.User.Id == currentUser.Id).First();
-            delivererGeoLocation.lat = float.Parse(lat);
-            delivererGeoLocation.lng = float.Parse(lng);
+            delivererGeoLocation.lat = lat;
+            delivererGeoLocation.lng = lng;
             context.SaveChanges();
             return View("Test");
         }
@@ -95,6 +98,8 @@ namespace ChipShip.Controllers
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
             var activeOrders = context.Orders.Include("User").Where(a => a.Deliverer.Id == currentUser.Id && a.completed == false).First();            
             var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == activeOrders.User.Id).ToList();
+            var customer = activeOrders.User;
+            var userAddress = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == customer.Id).First();
             foreach (var item in myCartId)
             {
                 shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.Id).ToList());
@@ -103,6 +108,8 @@ namespace ChipShip.Controllers
             model.shoppingCart = shoppingCarts;
             model.UserName = activeOrders.User.UserName;
             model.userId = activeOrders.User.Id;
+            model.lat = userAddress.Address.Lattitude;
+            model.lng = userAddress.Address.Longitude;
             double roundedPrice = 0;
             foreach (var item in model.shoppingCart)
             {

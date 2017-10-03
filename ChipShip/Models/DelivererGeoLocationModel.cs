@@ -9,8 +9,8 @@ namespace ChipShip.Models
     {
         public int Id { get; set; }
         public ApplicationUser User { get; set; }
-        public float lat { get; set; }
-        public float lng { get; set; }
+        public string lat { get; set; }
+        public string lng { get; set; }
         public bool tracking { get; set; }
     }
 }

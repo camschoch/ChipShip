@@ -10,7 +10,7 @@
         <th>Results</th>
         <th>Price</th>
         <th>Amount</th>
-        <th>Remove From Cart</th>
+        @*<th>Remove From Cart</th>*@
     </tr>
     @foreach (var d in Model.shoppingCart)
     {
@@ -20,7 +20,7 @@
                 <td>@Html.DisplayFor(temp => d[0].name)</td>
                 <td>@Html.DisplayFor(temp => d[0].salePrices)</td>
                 <td>@Html.DisplayFor(temp => d[0].amount)</td>
-                <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>
+                @*<td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>*@
             </tr>
         }
     }
@@ -31,3 +31,29 @@
         <th>@Model.TotalPrice</th>
     </tr>
 </table>
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+</style>
+<div id="map"></div>
+@*@section scripts {
+    @Scripts.Render("~/Scripts/Map.js")
+}*@
+<script>
+      function initMap() {
+        var uluru = {lat: @Model.lat , lng: @Model.lng };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co&callback=initMap">
+</script>

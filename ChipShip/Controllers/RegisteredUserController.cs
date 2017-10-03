@@ -125,7 +125,9 @@ namespace ChipShip.Controllers
                 var test = context.OrderRequest.Include("Deliverer").Where(a => a.User.Id == currentUser.Id).First();
                 var mapData = context.DelivererGeoLocation.Where(a => a.User.Id == test.Deliverer.Id).First();
                 model.lat = mapData.lat;
-                model.lng = mapData.lng;     
+                model.lng = mapData.lng;
+                var orderStatus = context.OrderStatus.Where(a => a.User.Id == currentUser.Id).First();
+                model.OrderStatus = orderStatus.status;
                 return View("OrderInProgress", model);
             }
             else

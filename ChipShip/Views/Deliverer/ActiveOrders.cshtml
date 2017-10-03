@@ -5,6 +5,7 @@
 @using (Html.BeginForm("PurchasedOrder", "Deliverer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
 <h2>@Model.UserName</h2>
+<h3>@Model.address</h3>
 <style>
     #map {
         height: 400px;
@@ -17,7 +18,7 @@
         <th>Results</th>
         <th>Price</th>
         <th>Amount</th>
-        <th>Remove From Cart</th>
+        @*<th>Remove From Cart</th>*@
     </tr>
     @foreach (var d in Model.shoppingCart)
     {
@@ -27,7 +28,7 @@
                 <td>@Html.DisplayFor(temp => d[0].name)</td>
                 <td>@Html.DisplayFor(temp => d[0].salePrices)</td>
                 <td>@Html.DisplayFor(temp => d[0].amount)</td>
-                <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>
+                @*<td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>*@
             </tr>
         }
     }

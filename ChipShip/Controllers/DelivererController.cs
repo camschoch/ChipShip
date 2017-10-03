@@ -110,6 +110,7 @@ namespace ChipShip.Controllers
             model.userId = activeOrders.User.Id;
             model.lat = userAddress.Address.Lattitude;
             model.lng = userAddress.Address.Longitude;
+            model.address = userAddress.Address.addressLine;
             double roundedPrice = 0;
             foreach (var item in model.shoppingCart)
             {
@@ -126,7 +127,13 @@ namespace ChipShip.Controllers
         {
             var customer = context.Users.Where(a => a.Id == userId).First();
             var customerOrderStatus = context.OrderStatus.Where(a => a.User.Id == userId).First();
-            customerOrderStatus.status = "Order has been purchased and is out for dilivary.";
+            var usersCarts = context.ShoppingcartJoin.Where(a => a.User.Id == userId);
+            foreach (var item in usersCarts)
+            {
+                context.ShoppingcartJoin.Remove(item);
+            }
+            customerOrderStatus.status = "Order has been purchased and is out for delivery.";
+            context.SaveChanges();
             return View("UserAddress");
         }
         public ActionResult UserAddress()

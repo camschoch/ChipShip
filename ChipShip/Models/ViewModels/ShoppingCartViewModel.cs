@@ -14,6 +14,8 @@ namespace ChipShip.Models.ViewModels
         public string userId { get; set; }
         public string lat { get; set; }
         public string lng { get; set; }
+        public string OrderStatus { get; set; }
+        public string address { get; set; }
     }
     public class ShoppingCartModel
     {

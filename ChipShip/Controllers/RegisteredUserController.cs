@@ -54,7 +54,7 @@ namespace ChipShip.Controllers
                     {
                         thing.amount++;                        
                         context.SaveChanges();
-                        return View("Test");
+                        return DisplayShoppingCart();
                     }
                     else if (thing.itemId == 0)
                     {
@@ -63,7 +63,7 @@ namespace ChipShip.Controllers
                         thing.salePrices = salePrice;
                         thing.itemId = itemId;
                         context.SaveChanges();
-                        return View("Test");
+                        return DisplayShoppingCart();
                     }
                 }             
             }
@@ -80,7 +80,7 @@ namespace ChipShip.Controllers
             context.ShoppingcartJoin.Add(ShoppingCartJoin);
             context.SaveChanges();
 
-            return View("Test");
+            return DisplayShoppingCart();
         }
         public ActionResult RemoveFromCart(int itemId, string name, double salePrice)
         {          
@@ -96,13 +96,14 @@ namespace ChipShip.Controllers
                 context.ShoppingcartJoin.Remove(removingFromCart);
             }           
             context.SaveChanges();
-            return View("Test");
+            return DisplayShoppingCart();
         }
 
         public ActionResult DisplayShoppingCart()
         {
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
-            var currentOrder = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();                     
+           // var currentOrder = context.Orders.Where(a => a.User.Id == currentUser.Id && a.completed == false).First();
+            var orderAccepted = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();                   
             List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();          
             var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id).ToList();
             foreach (var item in myCartId)
@@ -120,7 +121,7 @@ namespace ChipShip.Controllers
                     model.TotalPrice = Math.Round(roundedPrice, 2);             
                 }                             
             }
-            if (currentOrder.ActiveOrder == true)
+            if (orderAccepted.ActiveOrder == true && orderAccepted.OrderAccepted == true)
             {
                 var test = context.OrderRequest.Include("Deliverer").Where(a => a.User.Id == currentUser.Id).First();
                 var mapData = context.DelivererGeoLocation.Where(a => a.User.Id == test.Deliverer.Id).First();
@@ -142,10 +143,11 @@ namespace ChipShip.Controllers
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
             var myOrderId = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();
             myOrderId.ActiveOrder = true;
+            myOrderId.OrderAccepted = false;
             var myOrderStatus = context.OrderStatus.Where(a => a.User.Id == currentUser.Id).First();
             myOrderStatus.status = "Waiting to be approved by deliverer.";
             context.SaveChanges();
-            return View("Test");
+            return DisplayShoppingCart();
         }
         public ActionResult CreateAddress()
         {

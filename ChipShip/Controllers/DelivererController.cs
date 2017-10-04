@@ -58,20 +58,21 @@ namespace ChipShip.Controllers
         public ActionResult AcceptOrder(string userId)
         {
             var currentUser = context.Users.Where(a => a.UserName == User.Identity.Name).First();
-            var activeOrders = context.Orders.Where(a => a.Deliverer.Id == currentUser.Id && a.completed == false);
+            var activeOrders = context.OrderRequest.Where(a => a.Deliverer.Id == currentUser.Id && a.ActiveOrder == true);
             if (activeOrders.Count() >= 1)
             {
-                return View("Test");
+                //MAke a page that notifies you can only take one order at a time
+                return ActiveOrders();
             }
             else
             {
                 var customer = context.Users.Where(a => a.Id == userId).First();
-                //var orderRequestStatus = context.OrderRequest.Where(a => a.User.Id == customer.Id).First();
-                //orderRequestStatus.ActiveOrder = false;
+                var orderRequestStatus = context.OrderRequest.Where(a => a.User.Id == customer.Id).First();
+                orderRequestStatus.OrderAccepted = true;
                 var thing = context.OrderRequest.Where(a => a.User.Id == userId).First();
                 thing.Deliverer = currentUser;                
                 Orders newOrder = new Orders();
-                newOrder.completed = false;
+                newOrder.completed = false; ;
                 newOrder.Deliverer = context.Users.Where(a => a.UserName == User.Identity.Name).First();
                 newOrder.User = customer;
                 context.Orders.Add(newOrder);
@@ -79,7 +80,7 @@ namespace ChipShip.Controllers
                 orderStatus.status = "Order Accepted by " + currentUser.UserName;
                 //var userAddress = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == customer.Id).First();
                 context.SaveChanges();
-                return View("Test");
+                return ActiveOrders();
             }
         }
         [HttpPost]
@@ -96,7 +97,7 @@ namespace ChipShip.Controllers
         {
             List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
-            var activeOrders = context.Orders.Include("User").Where(a => a.Deliverer.Id == currentUser.Id && a.completed == false).First();            
+            var activeOrders = context.OrderRequest.Include("User").Where(a => a.Deliverer.Id == currentUser.Id && a.ActiveOrder == true).First();            
             var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == activeOrders.User.Id).ToList();
             var customer = activeOrders.User;
             var userAddress = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == customer.Id).First();

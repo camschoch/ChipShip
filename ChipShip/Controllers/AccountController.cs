@@ -155,14 +155,18 @@ namespace ChipShip.Controllers
                 ApplicationDbContext context = new ApplicationDbContext();
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                var currentUser = context.Users.Where(a => a.Id == user.Id).First();
                 var order = new OrderRequest();
                 order.ActiveOrder = false;
-                order.User = context.Users.Where(a => a.Id == user.Id).First();                
+                order.User = currentUser;        
                 context.OrderRequest.Add(order);
                 StatusModel orderStatus = new StatusModel();
                 orderStatus.status = "No order in progress.";
-                orderStatus.User = context.Users.Where(a => a.Id == user.Id).First();
+                orderStatus.User = currentUser;
                 context.OrderStatus.Add(orderStatus);
+                Rating rating = new Rating();
+                rating.User = currentUser;
+                context.Rating.Add(rating);
                 context.SaveChanges();
                 if (result.Succeeded)
                 {

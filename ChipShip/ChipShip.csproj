@@ -306,6 +306,14 @@
     <Compile Include="Migrations\201710032006490_changed decimal to string again.Designer.cs">
       <DependentUpon>201710032006490_changed decimal to string again.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710041517454_added rating table.cs" />
+    <Compile Include="Migrations\201710041517454_added rating table.Designer.cs">
+      <DependentUpon>201710041517454_added rating table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710041642264_added order acctepted.cs" />
+    <Compile Include="Migrations\201710041642264_added order acctepted.Designer.cs">
+      <DependentUpon>201710041642264_added order acctepted.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveOrders.cs" />
@@ -313,6 +321,7 @@
     <Compile Include="Models\DelivererGeoLocationModel.cs" />
     <Compile Include="Models\GeoLocationData.cs" />
     <Compile Include="Models\Orders.cs" />
+    <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\StatusModel.cs" />
     <Compile Include="Models\UserAddress.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -487,6 +496,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710032006490_changed decimal to string again.resx">
       <DependentUpon>201710032006490_changed decimal to string again.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710041517454_added rating table.resx">
+      <DependentUpon>201710041517454_added rating table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710041642264_added order acctepted.resx">
+      <DependentUpon>201710041642264_added order acctepted.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,10 +1,13 @@
 ﻿@model ChipShip.Models.ViewModels.ViewShoppingCart
 @{
-    ViewBag.Title = "ActiveOrders";
+    ViewBag.Title = "ToDelivery";
 }
-@using (Html.BeginForm("PurchasedOrder", "Deliverer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("FinishedOrder", "Deliverer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
+<h2>ToDelivery</h2>
+
 <h2>@Model.UserName</h2>
+<h3>@Model.address</h3>
 <style>
     #map {
         height: 400px;
@@ -38,16 +41,30 @@
         <th>@Model.TotalPrice</th>
     </tr>
 </table>
+<div id="map"></div>
+<script>
+      function initMap() {
+        var uluru = {lat: @double.Parse(Model.lat) , lng: @double.Parse(Model.lng) };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+</script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co&callback=initMap">
 </script>
 @section scripts {
     @Scripts.Render("~/Scripts/CurrentGeoLocation.js")
 }
-<div class="form-group">
-    @Html.HiddenFor(m => m.userId )
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" class="btn btn-default" value="Purchased Order" />
+    <div class="form-group">
+        @Html.HiddenFor(m => m.userId)
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Order Complete" />
+        </div>
     </div>
-</div>
 }

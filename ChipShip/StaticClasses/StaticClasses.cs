@@ -1,5 +1,6 @@
 ﻿using ChipShip.Models;
 using ChipShip.Models.ViewModels;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,36 @@ namespace ChipShip.StaticClasses
                 location.Add(lattitude.ToString());
                 location.Add(longitude.ToString());
                 return location;
+            }
+            return null;
+        }
+        static public StoreLocator WalmartLocatorApi(string city, string zip)
+        {
+            List<Array> test = new List<Array>();
+            var client = new RestClient("http://api.walmartlabs.com/v1/stores?format=json&zip=" + zip + "&city=" + city + "&apiKey=njswjuajtb79zycw6ycpk7bq");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("postman-token", "ff62a73e-5529-e70f-d7d1-086f879646d9");
+            request.AddHeader("cache-control", "no-cache");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var convertedData = JsonConvert.DeserializeObject<List<StoreLocator>>(response.Content);
+                return convertedData[0];            
+            }
+            return null;
+        }
+        //string userLocation, string walmoartLocation
+        static public string GoogleDistanceApi()
+        {
+            var client = new RestClient("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101%2C-73.89188969999998&destinations=40.6905615%2C-73.9976592&key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("postman-token", "619ff567-af23-8b90-6b95-946348249978");
+            request.AddHeader("cache-control", "no-cache");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var convertedData = JsonConvert.DeserializeObject<DistanceModel>(response.Content);
+                return convertedData.Rows[0].Elements[0].Distance.Text;
             }
             return null;
         }

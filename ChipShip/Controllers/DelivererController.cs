@@ -32,7 +32,7 @@ namespace ChipShip.Controllers
         {
             List<ApplicationUser> User = new List<ApplicationUser>();            
             OrderRequestViewModel model = new OrderRequestViewModel();
-            var AllReady = (context.OrderRequest.Include("User").Where(a => a.ActiveOrder == true));
+            var AllReady = (context.OrderRequest.Include("User").Where(a => a.ActiveOrder == true && a.OrderAccepted == false));
             foreach (var item in AllReady)
             {
                 User.Add(item.User);
@@ -95,51 +95,81 @@ namespace ChipShip.Controllers
         }
         public ActionResult ActiveOrders()
         {
-            List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
-            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
-            var activeOrders = context.OrderRequest.Include("User").Where(a => a.Deliverer.Id == currentUser.Id && a.ActiveOrder == true).First();            
-            var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == activeOrders.User.Id).ToList();
-            var customer = activeOrders.User;
-            var userAddress = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == customer.Id).First();
-            foreach (var item in myCartId)
+            try
             {
-                shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.Id).ToList());
-            }
-            ViewShoppingCart model = new ViewShoppingCart();
-            model.shoppingCart = shoppingCarts;
-            model.UserName = activeOrders.User.UserName;
-            model.userId = activeOrders.User.Id;
-            model.lat = userAddress.Address.Lattitude;
-            model.lng = userAddress.Address.Longitude;
-            model.address = userAddress.Address.addressLine;
-            double roundedPrice = 0;
-            foreach (var item in model.shoppingCart)
-            {
-                foreach (var thing in item)
+                List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
+                var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+                var activeOrders = context.OrderRequest.Include("User").Where(a => a.Deliverer.Id == currentUser.Id && a.ActiveOrder == true).First();
+                var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == activeOrders.User.Id).ToList();
+                var customer = activeOrders.User;
+                var orderPurchased = context.OrderRequest.Where(a => a.Deliverer.Id == currentUser.Id).First();
+                var userAddress = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == customer.Id).First();
+                foreach (var item in myCartId)
                 {
-                    roundedPrice += thing.salePrices;
-                    model.TotalPrice = Math.Round(roundedPrice, 2);
+                    shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.Id).ToList());
                 }
-            }          
-            return View("ActiveOrders", model);
+                ViewShoppingCart model = new ViewShoppingCart();
+                model.shoppingCart = shoppingCarts;
+                model.UserName = activeOrders.User.UserName;
+                model.userId = activeOrders.User.Id;
+                model.lat = userAddress.Address.Lattitude;
+                model.lng = userAddress.Address.Longitude;
+                model.address = userAddress.Address.addressLine;
+                double roundedPrice = 0;
+                foreach (var item in model.shoppingCart)
+                {
+                    foreach (var thing in item)
+                    {
+                        roundedPrice += thing.salePrices;
+                        model.TotalPrice = Math.Round(roundedPrice, 2);
+                    }
+                }
+                if (orderPurchased.OrderPurchased == true)
+                {
+                    return View("ToDelivery", model);
+                }
+                else
+                {
+                    return View("ActiveOrders", model);
+                }
+            }
+            catch
+            {
+                return View("NoOrder");
+            }
         }
         [HttpPost]
         public ActionResult PurchasedOrder(string userId)
         {
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
             var customer = context.Users.Where(a => a.Id == userId).First();
+            var orderPurchased = context.OrderRequest.Where(a => a.Deliverer.Id == currentUser.Id).First();
+            orderPurchased.OrderPurchased = true;
             var customerOrderStatus = context.OrderStatus.Where(a => a.User.Id == userId).First();
+            customerOrderStatus.status = "Order has been purchased and is out for delivery.";
+            context.SaveChanges();
+            return ActiveOrders();
+        }
+        [HttpPost]
+        public ActionResult FinishedOrder(string userId)
+        {
+            var resetUser = context.OrderRequest.Where(a => a.User.Id == userId).First();
+            resetUser.Deliverer = null;
+            resetUser.ActiveOrder = false;
+            resetUser.OrderAccepted = false;
+            resetUser.OrderPurchased = false;
+            var markedComplete = context.Orders.Where(a => a.User.Id == userId && a.completed == false).First();
+            markedComplete.completed = true;
+            var changeStatus = context.OrderStatus.Where(a => a.User.Id == userId).First();
+            changeStatus.status = "No order in progress.";            
             var usersCarts = context.ShoppingcartJoin.Where(a => a.User.Id == userId);
             foreach (var item in usersCarts)
             {
                 context.ShoppingcartJoin.Remove(item);
             }
-            customerOrderStatus.status = "Order has been purchased and is out for delivery.";
             context.SaveChanges();
-            return View("UserAddress");
-        }
-        public ActionResult UserAddress()
-        {
             return View();
         }
+        
     }
 }

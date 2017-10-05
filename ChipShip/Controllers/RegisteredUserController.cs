@@ -136,6 +136,35 @@ namespace ChipShip.Controllers
                 return View("ShoppingCart", model);
             }
         }
+        public ActionResult calculatePayment()
+        {
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();           
+            var orderAccepted = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();
+            List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
+            var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id).ToList();
+            foreach (var item in myCartId)
+            {
+                shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.Id).ToList());
+            }
+            ViewShoppingCart model = new ViewShoppingCart();
+            model.shoppingCart = shoppingCarts;
+            double roundedPrice = 0;
+            foreach (var item in model.shoppingCart)
+            {
+                foreach (var thing in item)
+                {
+                    roundedPrice += thing.salePrices;
+                    model.TotalPrice = Math.Round(roundedPrice, 2);
+                }
+            }
+            var address = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == currentUser.Id).First();
+            var location = StaticClasses.StaticClasses.WalmartLocatorApi(address.Address.City.City, address.Address.Zip.zip.ToString());
+            string distanceObject = StaticClasses.StaticClasses.GoogleDistanceApi();
+            var hold = distanceObject.Split(' ');
+            var distance = double.Parse(hold[0]);
+            
+            return View("Test");
+        }
         [HttpPost]
         public ActionResult SubmitOrder()
         {

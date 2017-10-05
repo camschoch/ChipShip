@@ -25,6 +25,7 @@ namespace ChipShip.Models.ViewModels
             public ApplicationUser Deliverer { get; set; }
             public bool ActiveOrder { get; set; }
             public bool OrderAccepted { get; set; }
+            public bool OrderPurchased { get; set; }
         }
     }
 }

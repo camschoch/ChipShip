@@ -48,6 +48,10 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Marketplace.Walmart.SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Marketplace.Walmart.SDK.1.0.0\lib\net45\Marketplace.Walmart.SDK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -314,11 +318,16 @@
     <Compile Include="Migrations\201710041642264_added order acctepted.Designer.cs">
       <DependentUpon>201710041642264_added order acctepted.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710041929141_added order purchased.cs" />
+    <Compile Include="Migrations\201710041929141_added order purchased.Designer.cs">
+      <DependentUpon>201710041929141_added order purchased.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveOrders.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\DelivererGeoLocationModel.cs" />
+    <Compile Include="Models\DistanceModel.cs" />
     <Compile Include="Models\GeoLocationData.cs" />
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\Rating.cs" />
@@ -424,7 +433,8 @@
     <Content Include="Views\RegisteredUser\Index.cshtml" />
     <Content Include="Views\Deliverer\ActiveOrders.cshtml" />
     <Content Include="Views\RegisteredUser\OrderInProgress.cshtml" />
-    <Content Include="Views\Deliverer\UserAddress.cshtml" />
+    <Content Include="Views\Deliverer\ToDelivery.cshtml" />
+    <Content Include="Views\Deliverer\NoOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -502,6 +512,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710041642264_added order acctepted.resx">
       <DependentUpon>201710041642264_added order acctepted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710041929141_added order purchased.resx">
+      <DependentUpon>201710041929141_added order purchased.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

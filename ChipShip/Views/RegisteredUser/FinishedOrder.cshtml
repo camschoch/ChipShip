@@ -1,0 +1,26 @@
+﻿@model ChipShip.Models.FinisedOrderModel
+@{
+    ViewBag.Title = "FinishedOrder";
+}
+
+<h2>Leave a rating here</h2>
+
+@using (Html.BeginForm("submitRating", "RegisteredUser", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <p>One Star @Html.RadioButtonFor(m => m.rating, 1)</p>
+
+    <p>Two Star @Html.RadioButtonFor(m => m.rating, 2)</p>
+
+    <p>Three Star @Html.RadioButtonFor(m => m.rating, 3)</p>
+
+    <p>Four Star @Html.RadioButtonFor(m => m.rating, 4)</p>
+
+    <p>Five Star @Html.RadioButtonFor(m => m.rating, 5)</p>
+
+    <div class="form-group">
+        @Html.HiddenFor(m => m.userId)
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Submit Rating" />
+        </div>
+    </div>
+}

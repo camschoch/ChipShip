@@ -10,7 +10,6 @@
         <th>Results</th>
         <th>Price</th>
         <th>Amount</th>
-        <th>Remove From Cart</th>
     </tr>
     @foreach (var d in Model.shoppingCart)
     {
@@ -20,18 +19,39 @@
                 <td>@Html.DisplayFor(temp => d[0].name)</td>
                 <td>@Html.DisplayFor(temp => d[0].salePrices)</td>
                 <td>@Html.DisplayFor(temp => d[0].amount)</td>
-                <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>
             </tr>
         }
     }
     <tr>
-        <th>Total Price</th>
+        <th>Total Price Of Items</th>
     </tr>
     <tr>
         <th>@Model.TotalPrice</th>
     </tr>
+    <tr>
+        <th>DeliveryCharge</th>
+    </tr>
+    <tr>
+        <th>@Model.deliveryPrice</th>
+    </tr>
+    <tr>
+        <th>FinalPrice</th>
+    </tr>
+    <tr>
+        <th>@Model.finalPrice</th>
+    </tr>      
 </table>
 <h2>@Model.OrderStatus</h2>
+<h2>Deliverer Rating @Model.rating</h2>
+@if (Model.message != null)
+{
+    <style>
+        h1 {
+            color: red;
+        }
+    </style>
+    <h1>@Model.message</h1>
+}
 <style>
     #map {
         height: 400px;

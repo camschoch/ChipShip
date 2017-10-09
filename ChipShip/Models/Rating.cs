@@ -9,10 +9,7 @@ namespace ChipShip.Models
     {
         public int Id { get; set; }
         public ApplicationUser User { get; set; }
-        public int twoStar { get; set; }
-        public int threeStar { get; set; }
-        public int fourStar { get; set; }
-        public int fiveStar { get; set; }
-
+        public int raiting { get; set; }       
+        public int raitingCount { get; set; }
     }
 }

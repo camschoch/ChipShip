@@ -1,0 +1,43 @@
+﻿@model ChipShip.Models.ViewModels.ViewShoppingCart
+@{
+    ViewBag.Title = "SubmittedOrder";
+}
+
+<h2>Waiting to be accepted</h2>
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Results</th>
+        <th>Price</th>
+        <th>Amount</th>
+    </tr>
+    @foreach (var d in Model.shoppingCart)
+    {
+        foreach (var item in d)
+        {
+            <tr>
+                <td>@Html.DisplayFor(temp => d[0].name)</td>
+                <td>@Html.DisplayFor(temp => d[0].salePrices)</td>
+                <td>@Html.DisplayFor(temp => d[0].amount)</td>                
+            </tr>
+        }
+    }
+    <tr>
+        <th>Total Price Of Items</th>
+    </tr>
+    <tr>
+        <th>@Model.TotalPrice</th>
+    </tr>
+    <tr>
+        <th>DeliveryCharge</th>
+    </tr>
+    <tr>
+        <th>@Model.deliveryPrice</th>
+    </tr>
+    <tr>
+        <th>FinalPrice</th>
+    </tr>
+    <tr>
+        <th>@Model.finalPrice</th>
+    </tr>
+</table>

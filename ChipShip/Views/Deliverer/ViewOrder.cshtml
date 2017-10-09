@@ -4,8 +4,9 @@
     ViewBag.Title = "ViewOrder";
 }
 
-<h2>ViewOrder</h2>
 
+<h2>@Model.addressLine</h2>
+<h2>Customer Rating @Model.rating</h2>
     <table class="table table-bordered table-responsive table-hover">
         <tr>
             <th>Product name</th>
@@ -15,7 +16,7 @@
       @foreach (var d in Model.OrderRequestLists)
       {
          <tr>
-             <td>@Html.DisplayFor(temp => d.shoppingCart.name)</td>
+             <td>@Html.DisplayFor(temp => d.shoppingCart.name)</td>             
              <td>@Html.DisplayFor(temp => d.shoppingCart.amount)</td>
              <td>@Html.DisplayFor(temp => d.shoppingCart.salePrices)</td>
          </tr>

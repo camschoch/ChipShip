@@ -45,8 +45,19 @@ namespace ChipShip.Controllers
             OrderRequestViewModel model = new OrderRequestViewModel();
             model.userId = userId;
             var currentUser = context.Users.Where(a => a.Id == userId).First();
+            var address = context.AddressJoin.Include("Address").Where(a => a.User.Id == userId).First();
+            var ratingData = context.Rating.Where(a => a.User.Id == userId).First();
+            if (ratingData.raitingCount > 1)
+            {
+                model.rating = ratingData.raiting / ratingData.raitingCount;
+            }
+            else
+            {
+                model.rating = 4;
+            }
             model.OrderRequestLists = context.ShoppingcartJoin.Include("ShoppingCart").Where(a => a.User.Id == currentUser.Id.ToString()).ToList();
             double roundedPrice = 0;
+            model.addressLine = address.Address.addressLine;
             foreach (var item in model.OrderRequestLists)
             {
                 roundedPrice += item.shoppingCart.salePrices;
@@ -61,18 +72,17 @@ namespace ChipShip.Controllers
             var activeOrders = context.OrderRequest.Where(a => a.Deliverer.Id == currentUser.Id && a.ActiveOrder == true);
             if (activeOrders.Count() >= 1)
             {
-                //MAke a page that notifies you can only take one order at a time
-                return ActiveOrders();
+                return View("OnlyOneOrder");
             }
             else
             {
                 var customer = context.Users.Where(a => a.Id == userId).First();
-                var orderRequestStatus = context.OrderRequest.Where(a => a.User.Id == customer.Id).First();
-                orderRequestStatus.OrderAccepted = true;
-                var thing = context.OrderRequest.Where(a => a.User.Id == userId).First();
-                thing.Deliverer = currentUser;                
+                var orderRequestStatus = context.OrderRequest.Where(a => a.User.Id == userId).First();
+                orderRequestStatus.OrderAccepted = true;             
+                orderRequestStatus.Deliverer = currentUser;
+                orderRequestStatus.ShowOnDeliverer = true;       
                 Orders newOrder = new Orders();
-                newOrder.completed = false; ;
+                newOrder.completed = false;
                 newOrder.Deliverer = context.Users.Where(a => a.UserName == User.Identity.Name).First();
                 newOrder.User = customer;
                 context.Orders.Add(newOrder);
@@ -120,11 +130,23 @@ namespace ChipShip.Controllers
                 {
                     foreach (var thing in item)
                     {
-                        roundedPrice += thing.salePrices;
-                        model.TotalPrice = Math.Round(roundedPrice, 2);
+                        if (thing.amount > 1)
+                        {
+                            roundedPrice += thing.salePrices * thing.amount;
+                            model.TotalPrice = Math.Round(roundedPrice, 2);
+                        }
+                        else
+                        {
+                            roundedPrice += thing.salePrices;
+                            model.TotalPrice = Math.Round(roundedPrice, 2);
+                        }
                     }
                 }
-                if (orderPurchased.OrderPurchased == true)
+                if(orderPurchased.ShowOnDeliverer != true)
+                {
+                    return View("NoOrder");
+                }
+                else if (orderPurchased.OrderPurchased == true)
                 {
                     return View("ToDelivery", model);
                 }
@@ -150,26 +172,55 @@ namespace ChipShip.Controllers
             context.SaveChanges();
             return ActiveOrders();
         }
-        [HttpPost]
+
         public ActionResult FinishedOrder(string userId)
         {
-            var resetUser = context.OrderRequest.Where(a => a.User.Id == userId).First();
-            resetUser.Deliverer = null;
-            resetUser.ActiveOrder = false;
-            resetUser.OrderAccepted = false;
-            resetUser.OrderPurchased = false;
-            var markedComplete = context.Orders.Where(a => a.User.Id == userId && a.completed == false).First();
-            markedComplete.completed = true;
-            var changeStatus = context.OrderStatus.Where(a => a.User.Id == userId).First();
-            changeStatus.status = "No order in progress.";            
-            var usersCarts = context.ShoppingcartJoin.Where(a => a.User.Id == userId);
-            foreach (var item in usersCarts)
-            {
-                context.ShoppingcartJoin.Remove(item);
-            }
+            var userRequest = context.OrderRequest.Include("User").Where(a => a.User.Id == userId).First();
+            userRequest.FinishOrder = true;
+            userRequest.ShowOnDeliverer = false;
+            context.SaveChanges();
+            //
+            //FinisedOrderModel model = new FinisedOrderModel();
+            //var resetUser = context.OrderRequest.Include("User").Where(a => a.User.Id == userId).First();
+            //model.userId = resetUser.User.Id;
+            //resetUser.Deliverer = null;
+            //resetUser.ActiveOrder = false;
+            //resetUser.OrderAccepted = false;
+            //resetUser.OrderPurchased = false;
+            //var markedComplete = context.Orders.Where(a => a.User.Id == userId && a.completed == false).First();
+            //markedComplete.completed = true;
+            //var changeStatus = context.OrderStatus.Where(a => a.User.Id == userId).First();
+            //changeStatus.status = "No order in progress.";            
+            //var usersCarts = context.ShoppingcartJoin.Where(a => a.User.Id == userId);
+            //foreach (var item in usersCarts)
+            //{
+            //    context.ShoppingcartJoin.Remove(item);
+            //}
+            //context.SaveChanges();
+            return View("FinishedOrder");
+        }
+        [HttpPost]
+        public ActionResult submitRating(FinisedOrderModel model)
+        {
+            var ratedUser = context.Rating.Where(a => a.User.Id == model.userId).First();
+            ratedUser.raiting += model.rating;
+            ratedUser.raitingCount++;
             context.SaveChanges();
             return View();
         }
-        
+        public ActionResult SendMessage(string userId)
+        {
+
+            return View("SendMessage");
+        }
+        [HttpPost]
+        public ActionResult SendMessage(string userId, string message)
+        {
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            var orderRequest = context.OrderRequest.Where(a => a.Deliverer.Id == currentUser.Id).First();
+            orderRequest.message = message;
+            context.SaveChanges();
+            return ActiveOrders();
+        }
     }
 }

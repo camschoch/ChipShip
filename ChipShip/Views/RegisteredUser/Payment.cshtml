@@ -1,0 +1,17 @@
+﻿@model ChipShip.Models.ViewModels.ViewShoppingCart
+@{
+    ViewBag.Title = "Payment";
+}
+
+<h2>Payment</h2>
+
+<form action="/your-server-side-code" method="POST">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_m3POaZtysin2xxYNDrSU7Jy2"
+            data-amount="@Model.finalPrice"
+            data-name="Demo Site"
+            data-description="Widget"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto">
+    </script>
+</form>

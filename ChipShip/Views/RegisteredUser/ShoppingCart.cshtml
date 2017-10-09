@@ -20,16 +20,28 @@
           <tr>
              <td>@Html.DisplayFor(temp => d[0].name)</td>
              <td>@Html.DisplayFor(temp => d[0].salePrices)</td>
-              <td>@Html.DisplayFor(temp => d[0].amount )</td>
-             <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>
-         </tr>
+             <td>@Html.DisplayFor(temp => d[0].amount )</td>
+             <td>@Html.ActionLink("Remove From Cart", "RemoveFromCart", "RegisteredUser", new { itemId = d[0].itemId, name = d[0].name, salePrice = d[0].salePrices }, null)</td>        
+           </tr>
           }
       }
         <tr>
-            <th>Total Price</th>
+            <th>Total Price Of Items</th>
         </tr>
         <tr>
             <th>@Model.TotalPrice</th>
+        </tr>      
+        <tr>
+            <th>DeliveryCharge</th>
+        </tr>
+        <tr>
+            <th>@Model.deliveryPrice</th>
+        </tr>      
+        <tr>
+            <th>FinalPrice</th>
+        </tr>
+        <tr>
+            <th>@Model.finalPrice</th>
         </tr>      
     </table>
     <div class="form-group">

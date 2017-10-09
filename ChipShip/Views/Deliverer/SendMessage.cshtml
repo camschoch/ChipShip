@@ -1,0 +1,23 @@
+﻿@model ChipShip.Models.ViewModels.ViewShoppingCart
+@{
+    ViewBag.Title = "SendMessage";
+}
+
+<h2>SendMessage</h2>
+
+@using (Html.BeginForm("SendMessage", "Deliverer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<div class="form-group">
+    @Html.LabelFor(m => m.message, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.message , new { @class = "form-control" })
+        <br />
+    </div>
+</div>
+<div class="form-group">
+    @Html.HiddenFor(m => m.userId)
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" class="btn btn-default" value="Order Complete" />
+    </div>
+</div>
+}

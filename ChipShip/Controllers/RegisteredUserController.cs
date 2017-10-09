@@ -37,35 +37,42 @@ namespace ChipShip.Controllers
             return View("ShoppingPage", model);
         }
         public ActionResult AddToCart(int itemId, string name, float salePrice)
-        {
-            ApplicationDbContext context = new ApplicationDbContext();
+        {            
             List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            var orderAccepted = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();
+            if (orderAccepted.ActiveOrder == true || orderAccepted.OrderAccepted == true || orderAccepted.OrderPurchased == true)
+            {
+                return View("CannotAdd");
+            }
+            else
+            {
             var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id).ToList();
             foreach (var item in myCartId)
             {
                 shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.Id).ToList());
             }
-            foreach (var item in shoppingCarts)
-            {
-                foreach (var thing in item)
+                foreach (var item in shoppingCarts)
                 {
-                    if (thing.itemId == itemId)
+                    foreach (var thing in item)
                     {
-                        thing.amount++;                        
-                        context.SaveChanges();
-                        return DisplayShoppingCart();
+                        if (thing.itemId == itemId)
+                        {
+                            thing.amount++;
+                            context.SaveChanges();
+                            return DisplayShoppingCart();
+                        }
+                        else if (thing.itemId == 0)
+                        {
+                            thing.amount = 1;
+                            thing.name = name;
+                            thing.salePrices = salePrice;
+                            thing.itemId = itemId;
+                            context.SaveChanges();
+                            return DisplayShoppingCart();
+                        }
                     }
-                    else if (thing.itemId == 0)
-                    {
-                        thing.amount = 1;
-                        thing.name = name;
-                        thing.salePrices = salePrice;
-                        thing.itemId = itemId;
-                        context.SaveChanges();
-                        return DisplayShoppingCart();
-                    }
-                }             
+                }          
             }
             ShoppingCartModel shoppingCart = new ShoppingCartModel();
             shoppingCart.itemId = itemId;
@@ -113,27 +120,73 @@ namespace ChipShip.Controllers
             ViewShoppingCart model = new ViewShoppingCart();
             model.shoppingCart = shoppingCarts;
             double roundedPrice = 0;
+            double deliveryPrice = 0;
+            double finalPrice = 0;
             foreach (var item in model.shoppingCart)
             {
                 foreach (var thing in item)
                 {
-                    roundedPrice += thing.salePrices;
-                    model.TotalPrice = Math.Round(roundedPrice, 2);             
+                    if (thing.amount > 1)
+                    {
+                        roundedPrice += thing.salePrices * thing.amount;
+                        model.TotalPrice = Math.Round(roundedPrice, 2);
+                    }
+                    else
+                    {
+                        roundedPrice += thing.salePrices;
+                        model.TotalPrice = Math.Round(roundedPrice, 2);
+                    }
                 }                             
             }
-            if (orderAccepted.ActiveOrder == true && orderAccepted.OrderAccepted == true)
+            try
             {
-                var test = context.OrderRequest.Include("Deliverer").Where(a => a.User.Id == currentUser.Id).First();
-                var mapData = context.DelivererGeoLocation.Where(a => a.User.Id == test.Deliverer.Id).First();
-                model.lat = mapData.lat;
-                model.lng = mapData.lng;
-                var orderStatus = context.OrderStatus.Where(a => a.User.Id == currentUser.Id).First();
-                model.OrderStatus = orderStatus.status;
-                return View("OrderInProgress", model);
+                var address = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == currentUser.Id).First();
+                var location = StaticClasses.StaticClasses.WalmartLocatorApi(address.Address.City.City, address.Address.Zip.zip.ToString());
+                string distanceObject = StaticClasses.StaticClasses.GoogleDistanceApi();
+                var hold = distanceObject.Split(' ');
+                var distance = double.Parse(hold[0]);
+                deliveryPrice += distance * 2.15;
+                finalPrice = deliveryPrice + roundedPrice;
+                model.deliveryPrice = Math.Round(deliveryPrice, 2);
+                model.finalPrice = Math.Round(finalPrice, 2);
+                if (orderAccepted.FinishOrder == true)
+                {
+                    FinisedOrderModel finishmodel = new FinisedOrderModel();
+                    finishmodel.userId = currentUser.Id;                    
+                    return View("FinishedOrder", finishmodel);
+                }
+                else if (orderAccepted.ActiveOrder == true && orderAccepted.OrderAccepted == true)
+                {
+                    var orderRequest = context.OrderRequest.Include("Deliverer").Where(a => a.User.Id == currentUser.Id).First();
+                    var mapData = context.DelivererGeoLocation.Where(a => a.User.Id == orderRequest.Deliverer.Id).First();
+                    var rating = context.Rating.Where(a => a.User.Id == orderRequest.Deliverer.Id).First();
+                    if (rating.raitingCount > 1)
+                    {
+                        model.rating = rating.raiting / rating.raitingCount;
+                    }
+                    else
+                    {
+                        model.rating = 4;
+                    }
+                    model.lat = mapData.lat;
+                    model.lng = mapData.lng;
+                    var orderStatus = context.OrderStatus.Where(a => a.User.Id == currentUser.Id).First();
+                    model.OrderStatus = orderStatus.status;
+                    model.message = orderRequest.message;
+                    return View("OrderInProgress", model);
+                }
+                else if (orderAccepted.ActiveOrder == true && orderAccepted.OrderAccepted == false)
+                {
+                    return View("SubmittedOrder", model);
+                }
+                else
+                {
+                    return View("ShoppingCart", model);
+                }
             }
-            else
+            catch
             {
-                return View("ShoppingCart", model);
+                return View("NoAddress");
             }
         }
         public ActionResult calculatePayment()
@@ -153,8 +206,16 @@ namespace ChipShip.Controllers
             {
                 foreach (var thing in item)
                 {
-                    roundedPrice += thing.salePrices;
-                    model.TotalPrice = Math.Round(roundedPrice, 2);
+                    if (thing.amount > 1)
+                    {
+                        roundedPrice += thing.salePrices * thing.amount;
+                        model.TotalPrice = Math.Round(roundedPrice, 2);
+                    }
+                    else
+                    {
+                        roundedPrice += thing.salePrices;
+                        model.TotalPrice = Math.Round(roundedPrice, 2);
+                    }
                 }
             }
             var address = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == currentUser.Id).First();
@@ -162,14 +223,65 @@ namespace ChipShip.Controllers
             string distanceObject = StaticClasses.StaticClasses.GoogleDistanceApi();
             var hold = distanceObject.Split(' ');
             var distance = double.Parse(hold[0]);
+            roundedPrice += distance * 2.15;
             
             return View("Test");
+        }
+        [HttpPost]
+        public ActionResult ProcessPayment()
+        {
+            //StripeConfiguration.SetApiKey("sk_test_MrrHmTID56LoiGaWtnXyAJit");
+
+            //// Token is created using Stripe.js or Checkout!
+            //// Get the payment token submitted by the form:
+            //var token = "tok_visa";
+
+            //// Charge the user's card:
+            //var charges = new StripeChargeService();
+            //var charge = charges.Create(new StripeChargeCreateOptions
+            //{
+            //    Amount = 1000,
+            //    Currency = "usd",
+            //    Description = "Example charge",
+            //    SourceTokenOrExistingSourceId = token
+            //});
+            return View("Test");
+        }
+        public ActionResult Payment()
+        {
+            return View();
+        }
+        public ActionResult submitRating(FinisedOrderModel model)
+        {
+            var resetUser = context.OrderRequest.Include("User").Include("Deliverer").Where(a => a.User.Id == model.userId).First();
+            resetUser.Deliverer = null;
+            resetUser.ActiveOrder = false;
+            resetUser.OrderAccepted = false;
+            resetUser.OrderPurchased = false;
+            resetUser.FinishOrder = false;
+            resetUser.ActiveOrder = false;
+            var markedComplete = context.Orders.Where(a => a.User.Id == model.userId && a.completed == false).First();
+            markedComplete.completed = true;
+            var changeStatus = context.OrderStatus.Where(a => a.User.Id == model.userId).First();
+            changeStatus.status = "No order in progress.";
+            var usersCarts = context.ShoppingcartJoin.Where(a => a.User.Id == model.userId);
+            foreach (var item in usersCarts)
+            {
+                context.ShoppingcartJoin.Remove(item);
+            }
+            var ratedUser = context.Rating.Where(a => a.User.Id == model.userId).First();
+            ratedUser.raiting += model.rating;
+            ratedUser.raitingCount++;
+            context.SaveChanges();
+            return View("Index");
         }
         [HttpPost]
         public ActionResult SubmitOrder()
         {
             //NOT FINISHED
+
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            var address = context.AddressJoin.Include("Address").Where(a => a.User.Id == currentUser.Id).First();
             var myOrderId = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();
             myOrderId.ActiveOrder = true;
             myOrderId.OrderAccepted = false;

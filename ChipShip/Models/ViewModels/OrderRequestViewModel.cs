@@ -9,6 +9,8 @@ namespace ChipShip.Models.ViewModels
     {
         public List<ApplicationUser> Users { get; set; }
         public List<ShoppingCartJoinModel> OrderRequestLists { get; set; }
+        public string addressLine { get; set; }
+        public double rating { get; set; }
         public double TotalPrice { get; set; }
         public string userId { get; set; }
 
@@ -26,6 +28,9 @@ namespace ChipShip.Models.ViewModels
             public bool ActiveOrder { get; set; }
             public bool OrderAccepted { get; set; }
             public bool OrderPurchased { get; set; }
+            public bool FinishOrder { get; set; }
+            public bool ShowOnDeliverer { get; set; }
+            public string message { get; set; }
         }
     }
 }

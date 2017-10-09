@@ -322,12 +322,31 @@
     <Compile Include="Migrations\201710041929141_added order purchased.Designer.cs">
       <DependentUpon>201710041929141_added order purchased.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710061854367_changed rating.cs" />
+    <Compile Include="Migrations\201710061854367_changed rating.Designer.cs">
+      <DependentUpon>201710061854367_changed rating.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710082353387_adding.cs" />
+    <Compile Include="Migrations\201710082353387_adding.Designer.cs">
+      <DependentUpon>201710082353387_adding.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710091829236_adding bool to orderRequest.cs" />
+    <Compile Include="Migrations\201710091829236_adding bool to orderRequest.Designer.cs">
+      <DependentUpon>201710091829236_adding bool to orderRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710091953188_added message\.cs" />
+    <Compile Include="Migrations\201710091953188_added message\.Designer.cs" />
+    <Compile Include="Migrations\201710091956142_fix migraation error.cs" />
+    <Compile Include="Migrations\201710091956142_fix migraation error.Designer.cs">
+      <DependentUpon>201710091956142_fix migraation error.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveOrders.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\DelivererGeoLocationModel.cs" />
     <Compile Include="Models\DistanceModel.cs" />
+    <Compile Include="Models\FinisedOrderModel.cs" />
     <Compile Include="Models\GeoLocationData.cs" />
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\Rating.cs" />
@@ -379,6 +398,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Map.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Payment.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -435,6 +455,14 @@
     <Content Include="Views\RegisteredUser\OrderInProgress.cshtml" />
     <Content Include="Views\Deliverer\ToDelivery.cshtml" />
     <Content Include="Views\Deliverer\NoOrder.cshtml" />
+    <Content Include="Views\RegisteredUser\Payment.cshtml" />
+    <Content Include="Views\Deliverer\FinishedOrder.cshtml" />
+    <Content Include="Views\RegisteredUser\SubmittedOrder.cshtml" />
+    <Content Include="Views\RegisteredUser\CannotAdd.cshtml" />
+    <Content Include="Views\RegisteredUser\NoAddress.cshtml" />
+    <Content Include="Views\RegisteredUser\FinishedOrder.cshtml" />
+    <Content Include="Views\Deliverer\OnlyOneOrder.cshtml" />
+    <Content Include="Views\Deliverer\SendMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -515,6 +543,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710041929141_added order purchased.resx">
       <DependentUpon>201710041929141_added order purchased.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710061854367_changed rating.resx">
+      <DependentUpon>201710061854367_changed rating.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710082353387_adding.resx">
+      <DependentUpon>201710082353387_adding.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710091829236_adding bool to orderRequest.resx">
+      <DependentUpon>201710091829236_adding bool to orderRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710091953188_added message\.resx">
+      <DependentUpon>.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710091956142_fix migraation error.resx">
+      <DependentUpon>201710091956142_fix migraation error.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

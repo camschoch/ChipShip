@@ -340,6 +340,10 @@
     <Compile Include="Migrations\201710091956142_fix migraation error.Designer.cs">
       <DependentUpon>201710091956142_fix migraation error.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710101404133_adding order history.cs" />
+    <Compile Include="Migrations\201710101404133_adding order history.Designer.cs">
+      <DependentUpon>201710101404133_adding order history.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveOrders.cs" />
@@ -348,6 +352,7 @@
     <Compile Include="Models\DistanceModel.cs" />
     <Compile Include="Models\FinisedOrderModel.cs" />
     <Compile Include="Models\GeoLocationData.cs" />
+    <Compile Include="Models\OrderHistoryModel.cs" />
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\StatusModel.cs" />
@@ -463,6 +468,8 @@
     <Content Include="Views\RegisteredUser\FinishedOrder.cshtml" />
     <Content Include="Views\Deliverer\OnlyOneOrder.cshtml" />
     <Content Include="Views\Deliverer\SendMessage.cshtml" />
+    <Content Include="Views\RegisteredUser\OrderHistory.cshtml" />
+    <Content Include="Views\RegisteredUser\OrderHistoryPeople.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -558,6 +565,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710091956142_fix migraation error.resx">
       <DependentUpon>201710091956142_fix migraation error.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710101404133_adding order history.resx">
+      <DependentUpon>201710101404133_adding order history.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,0 +1,28 @@
+﻿@model ChipShip.Models.OrderHistoryModel
+@{
+    ViewBag.Title = "OrderHistory";
+}
+
+<h2>OrderHistory</h2>
+
+<h2>ShoppingCart</h2>
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Results</th>
+        <th>Amount</th>
+        <th>Price</th>
+    </tr>
+    @foreach (var d in Model.ItemList)
+    {
+        foreach (var item in d)
+        {
+
+            
+            <tr>
+                <td>@Html.DisplayFor(temp => item.name)</td>
+                <td>@Html.DisplayFor(temp => item.amount)</td>
+                <td>@Html.DisplayFor(temp => item.salePrices)</td>
+            </tr>
+        }
+    }    
+</table>

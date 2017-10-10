@@ -4,8 +4,6 @@
 }
 
 <h2>ShoppingCart</h2>
-@using (Html.BeginForm("SubmitOrder", "RegisteredUser", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
     <table class="table table-bordered table-responsive table-hover">
         <tr>
             <th>Results</th>
@@ -44,9 +42,13 @@
             <th>@Model.finalPrice</th>
         </tr>      
     </table>
-    <div class="form-group">
-      <div class="col-md-offset-2 col-md-10">
-          <input type="submit" class="btn btn-default" value="Submit Order" />
-      </div>
-    </div>
-}
+    <form action="SubmitOrder" method="POST">
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_m3POaZtysin2xxYNDrSU7Jy2"
+                data-amount=""
+                data-name="Demo Site"
+                data-description="Widget"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto">
+        </script>
+    </form>

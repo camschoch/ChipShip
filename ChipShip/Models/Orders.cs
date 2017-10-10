@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChipShip.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,5 +12,7 @@ namespace ChipShip.Models
         public ApplicationUser Deliverer { get; set; }
         public ApplicationUser User { get; set; }
         public bool completed { get; set; }
+        public List<ShoppingCartModel> Items { get; set; }
+
     }
 }

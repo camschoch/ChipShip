@@ -260,8 +260,6 @@ namespace ChipShip.Controllers
             resetUser.OrderPurchased = false;
             resetUser.FinishOrder = false;
             resetUser.ActiveOrder = false;
-            var markedComplete = context.Orders.Where(a => a.User.Id == model.userId && a.completed == false).First();
-            markedComplete.completed = true;
             var changeStatus = context.OrderStatus.Where(a => a.User.Id == model.userId).First();
             changeStatus.status = "No order in progress.";
             var usersCarts = context.ShoppingcartJoin.Where(a => a.User.Id == model.userId);
@@ -275,6 +273,40 @@ namespace ChipShip.Controllers
             context.SaveChanges();
             return View("Index");
         }
+        public ActionResult OrderHistoryPeople()
+        {
+            try
+            {
+                OrderRequestViewModel model = new OrderRequestViewModel();
+                List<ApplicationUser> userList = new List<ApplicationUser>();
+                var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+                var people = context.Orders.Include("Deliverer").Where(a => a.User.Id == currentUser.Id && a.completed == true);
+                foreach (var item in people)
+                {
+                    userList.Add(item.Deliverer);
+                }
+                model.Users = userList;
+                return View(model);
+            }
+            catch
+            {
+                //NO PREVIOUS OORDERS
+                return View();
+            }
+        }
+        public ActionResult OrderHistory(string userId)
+        {
+            OrderHistoryModel model = new OrderHistoryModel();
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            List<List<ShoppingCartModel>> listOfModel = new List<List<ShoppingCartModel>>();
+            var orders = context.Orders.Include("Items").Where(a => a.User.Id == currentUser.Id && a.completed == true && a.Deliverer.Id == userId);
+            foreach (var item in orders)
+            {
+                listOfModel.Add(item.Items);
+            }
+            model.ItemList = listOfModel;
+            return View(model);
+        }
         [HttpPost]
         public ActionResult SubmitOrder()
         {
@@ -286,7 +318,7 @@ namespace ChipShip.Controllers
             myOrderId.ActiveOrder = true;
             myOrderId.OrderAccepted = false;
             var myOrderStatus = context.OrderStatus.Where(a => a.User.Id == currentUser.Id).First();
-            myOrderStatus.status = "Waiting to be approved by deliverer.";
+            myOrderStatus.status = "Waiting to be approved by deliverer.";                        
             context.SaveChanges();
             return DisplayShoppingCart();
         }

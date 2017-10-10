@@ -17,12 +17,6 @@ namespace ChipShip.Controllers
         {
             context = new ApplicationDbContext();
         }
-        public ActionResult Test()
-        {
-            //StaticClasses.StaticClasses.GoogleGeoLocationApi();
-            DelivererGeoLocationModel model = new DelivererGeoLocationModel();            
-            return View(model);
-        }
         // GET: Deliverer
         public ActionResult Index()
         {
@@ -82,9 +76,17 @@ namespace ChipShip.Controllers
                 orderRequestStatus.Deliverer = currentUser;
                 orderRequestStatus.ShowOnDeliverer = true;       
                 Orders newOrder = new Orders();
+                //List<List<ShoppingCartModel>> allItems = new List<List<ShoppingCartModel>>();
+                List<ShoppingCartModel> itemDetails = new List<ShoppingCartModel>();
                 newOrder.completed = false;
                 newOrder.Deliverer = context.Users.Where(a => a.UserName == User.Identity.Name).First();
                 newOrder.User = customer;
+                var items = context.ShoppingcartJoin.Include("User").Include("shoppingCart").Where(a => a.User.Id == userId);
+                foreach (var item in items)
+                {
+                    itemDetails.Add(item.shoppingCart);
+                }
+                newOrder.Items = itemDetails;
                 context.Orders.Add(newOrder);
                 var orderStatus = context.OrderStatus.Where(a => a.User.Id == customer.Id).First();
                 orderStatus.status = "Order Accepted by " + currentUser.UserName;
@@ -178,6 +180,8 @@ namespace ChipShip.Controllers
             var userRequest = context.OrderRequest.Include("User").Where(a => a.User.Id == userId).First();
             userRequest.FinishOrder = true;
             userRequest.ShowOnDeliverer = false;
+            var orderHistory = context.Orders.Where(a => a.User.Id == userId && a.completed == false).First();
+            orderHistory.completed = true;
             context.SaveChanges();
             //
             //FinisedOrderModel model = new FinisedOrderModel();

@@ -344,6 +344,18 @@
     <Compile Include="Migrations\201710101404133_adding order history.Designer.cs">
       <DependentUpon>201710101404133_adding order history.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710102123553_adding payroll.cs" />
+    <Compile Include="Migrations\201710102123553_adding payroll.Designer.cs">
+      <DependentUpon>201710102123553_adding payroll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710102139063_adding payroll fix.cs" />
+    <Compile Include="Migrations\201710102139063_adding payroll fix.Designer.cs">
+      <DependentUpon>201710102139063_adding payroll fix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710110206328_changed name for pay.cs" />
+    <Compile Include="Migrations\201710110206328_changed name for pay.Designer.cs">
+      <DependentUpon>201710110206328_changed name for pay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveOrders.cs" />
@@ -356,6 +368,7 @@
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\StatusModel.cs" />
+    <Compile Include="Models\ToBePaid.cs" />
     <Compile Include="Models\UserAddress.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -470,6 +483,8 @@
     <Content Include="Views\Deliverer\SendMessage.cshtml" />
     <Content Include="Views\RegisteredUser\OrderHistory.cshtml" />
     <Content Include="Views\RegisteredUser\OrderHistoryPeople.cshtml" />
+    <Content Include="Views\Admin\ToBePaid.cshtml" />
+    <Content Include="Views\Admin\ToBePaidPeople.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -568,6 +583,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710101404133_adding order history.resx">
       <DependentUpon>201710101404133_adding order history.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710102123553_adding payroll.resx">
+      <DependentUpon>201710102123553_adding payroll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710102139063_adding payroll fix.resx">
+      <DependentUpon>201710102139063_adding payroll fix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710110206328_changed name for pay.resx">
+      <DependentUpon>201710110206328_changed name for pay.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

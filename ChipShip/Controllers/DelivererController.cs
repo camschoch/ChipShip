@@ -175,13 +175,19 @@ namespace ChipShip.Controllers
             return ActiveOrders();
         }
 
-        public ActionResult FinishedOrder(string userId)
+        public ActionResult FinishedOrder(string userId, double TotalPrice)
         {
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
             var userRequest = context.OrderRequest.Include("User").Where(a => a.User.Id == userId).First();
             userRequest.FinishOrder = true;
             userRequest.ShowOnDeliverer = false;
             var orderHistory = context.Orders.Where(a => a.User.Id == userId && a.completed == false).First();
             orderHistory.completed = true;
+            ToBePaid toBePaid = new ToBePaid();
+            toBePaid.User = currentUser;
+            toBePaid.amount = TotalPrice;
+            toBePaid.paid = false;      
+            context.toBePaid.Add(toBePaid);
             context.SaveChanges();
             //
             //FinisedOrderModel model = new FinisedOrderModel();

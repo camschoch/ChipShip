@@ -50,5 +50,35 @@ namespace ChipShip.Controllers
             context.SaveChanges();
             return View();
         }
+        public ActionResult ToBePaidPeople()
+        {
+            context = new ApplicationDbContext();
+            PeopleToBePaid model = new PeopleToBePaid();
+            List<ApplicationUser> userList = new List<ApplicationUser>();
+            var allDeliverers = context.toBePaid.Include("Deliverer").Where(a => a.paid == false);
+            var deliverers = allDeliverers.Distinct();
+            foreach (var item in deliverers)
+            {
+                userList.Add(item.User);
+            }
+            model.toBePaidUsers = userList;
+            return View(model);
+        }
+        public ActionResult ToBePaid(string userId)
+        {
+            PeopleToBePaid model = new PeopleToBePaid();
+            List<ToBePaid> userList = new List<ToBePaid>();
+            var deliverers = context.toBePaid.Where(a => a.paid != true && a.User.Id == userId);
+            foreach (var item in deliverers)
+            {
+                userList.Add(item);
+            }
+            model.toBePaid = userList;
+            return View(model);
+        }
+        public ActionResult PayDeliverer()
+        {
+            return View();
+        }
     }
 }

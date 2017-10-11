@@ -44,5 +44,6 @@ namespace ChipShip.Models
         public DbSet<DelivererGeoLocationModel> DelivererGeoLocation { get; set; }
         public DbSet<StatusModel> OrderStatus { get; set; }
         public DbSet<Rating> Rating { get; set; }
+        public DbSet<ToBePaid> toBePaid { get; set; }
     }
 }

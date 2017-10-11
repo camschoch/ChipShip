@@ -1,0 +1,23 @@
+﻿@model ChipShip.Models.PeopleToBePaid
+
+@{
+    ViewBag.Title = "ToBePaidPeople";
+}
+
+<h2>ToBePaidPeople</h2>
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Deliverer</th>
+        <th>See Payment</th>
+    </tr>
+    @foreach (var d in Model.toBePaidUsers)
+    {
+       
+            <tr>
+                <td>@Html.DisplayFor(temp => d.UserName)</td>              
+                <td>@Html.ActionLink("Pay Deliverer", "ToBePaid", "Admin", new { userId = d.Id }, null)</td>
+            </tr>
+        
+    }   
+</table>

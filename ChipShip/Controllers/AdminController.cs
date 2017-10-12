@@ -48,14 +48,14 @@ namespace ChipShip.Controllers
             }
             applicant.ApplyToDeliverer = false;
             context.SaveChanges();
-            return View();
+            return View("Index");
         }
         public ActionResult ToBePaidPeople()
         {
             context = new ApplicationDbContext();
             PeopleToBePaid model = new PeopleToBePaid();
             List<ApplicationUser> userList = new List<ApplicationUser>();
-            var allDeliverers = context.toBePaid.Include("Deliverer").Where(a => a.paid == false);
+            var allDeliverers = context.toBePaid.Include("User").Where(a => a.paid == false);
             var deliverers = allDeliverers.Distinct();
             foreach (var item in deliverers)
             {
@@ -66,9 +66,10 @@ namespace ChipShip.Controllers
         }
         public ActionResult ToBePaid(string userId)
         {
+            context = new ApplicationDbContext();
             PeopleToBePaid model = new PeopleToBePaid();
             List<ToBePaid> userList = new List<ToBePaid>();
-            var deliverers = context.toBePaid.Where(a => a.paid != true && a.User.Id == userId);
+            var deliverers = context.toBePaid.Include("User").Where(a => a.paid != true && a.User.Id == userId);
             foreach (var item in deliverers)
             {
                 userList.Add(item);
@@ -76,9 +77,13 @@ namespace ChipShip.Controllers
             model.toBePaid = userList;
             return View(model);
         }
-        public ActionResult PayDeliverer()
+        public ActionResult PayDeliverer(int Id)
         {
-            return View();
+            context = new ApplicationDbContext();
+            var payedOrder = context.toBePaid.Include("User").Where(a => a.Id == Id).First(); ;
+            payedOrder.paid = true;
+            context.SaveChanges();
+            return View("Index");
         }
     }
 }

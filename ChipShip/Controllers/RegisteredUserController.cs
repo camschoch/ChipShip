@@ -28,7 +28,7 @@ namespace ChipShip.Controllers
             var currentUser = context.Users.Where(a => a.UserName == User.Identity.Name).First();
             currentUser.ApplyToDeliverer = true;
             context.SaveChanges();            
-            return View("Test");          
+            return View("Index");          
         }
         public ActionResult TestCallWalmart(string search)
         {
@@ -225,7 +225,7 @@ namespace ChipShip.Controllers
             var distance = double.Parse(hold[0]);
             roundedPrice += distance * 2.15;
             
-            return View("Test");
+            return View("Index");
         }
         [HttpPost]
         public ActionResult ProcessPayment()
@@ -345,7 +345,7 @@ namespace ChipShip.Controllers
                 context.AddressJoin.Add(junction);
                 context.SaveChanges();
             }
-            return RedirectToAction("Test");
+            return RedirectToAction("Index");
         }
         private Address GetAddress(Address model)
         {

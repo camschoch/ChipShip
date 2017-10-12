@@ -188,25 +188,7 @@ namespace ChipShip.Controllers
             toBePaid.amount = TotalPrice;
             toBePaid.paid = false;      
             context.toBePaid.Add(toBePaid);
-            context.SaveChanges();
-            //
-            //FinisedOrderModel model = new FinisedOrderModel();
-            //var resetUser = context.OrderRequest.Include("User").Where(a => a.User.Id == userId).First();
-            //model.userId = resetUser.User.Id;
-            //resetUser.Deliverer = null;
-            //resetUser.ActiveOrder = false;
-            //resetUser.OrderAccepted = false;
-            //resetUser.OrderPurchased = false;
-            //var markedComplete = context.Orders.Where(a => a.User.Id == userId && a.completed == false).First();
-            //markedComplete.completed = true;
-            //var changeStatus = context.OrderStatus.Where(a => a.User.Id == userId).First();
-            //changeStatus.status = "No order in progress.";            
-            //var usersCarts = context.ShoppingcartJoin.Where(a => a.User.Id == userId);
-            //foreach (var item in usersCarts)
-            //{
-            //    context.ShoppingcartJoin.Remove(item);
-            //}
-            //context.SaveChanges();
+            context.SaveChanges();         
             return View("FinishedOrder");
         }
         [HttpPost]
@@ -216,7 +198,7 @@ namespace ChipShip.Controllers
             ratedUser.raiting += model.rating;
             ratedUser.raitingCount++;
             context.SaveChanges();
-            return View();
+            return View("Index");
         }
         public ActionResult SendMessage(string userId)
         {

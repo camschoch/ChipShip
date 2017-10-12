@@ -461,13 +461,11 @@
     <Content Include="Views\Shared\Admin_Layout.cshtml" />
     <Content Include="Views\Shared\Deliverer_Layout.cshtml" />
     <Content Include="Views\Admin\ApproveDeliverer.cshtml" />
-    <Content Include="Views\RegisteredUser\Test.cshtml" />
     <Content Include="Views\RegisteredUser\ShoppingPage.cshtml" />
     <Content Include="Views\RegisteredUser\ShoppingCart.cshtml" />
     <Content Include="Views\Deliverer\OrderRequests.cshtml" />
     <Content Include="Views\Deliverer\ViewOrder.cshtml" />
     <Content Include="Views\RegisteredUser\Address.cshtml" />
-    <Content Include="Views\Deliverer\Test.cshtml" />
     <Content Include="Views\RegisteredUser\Index.cshtml" />
     <Content Include="Views\Deliverer\ActiveOrders.cshtml" />
     <Content Include="Views\RegisteredUser\OrderInProgress.cshtml" />
@@ -485,6 +483,8 @@
     <Content Include="Views\RegisteredUser\OrderHistoryPeople.cshtml" />
     <Content Include="Views\Admin\ToBePaid.cshtml" />
     <Content Include="Views\Admin\ToBePaidPeople.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Deliverer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

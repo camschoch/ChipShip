@@ -5,13 +5,12 @@
     @Scripts.Render("~/bundles/modernizr")
 }
 
-<h2>_IndexRegisteredUser</h2>
-
 <body>
-    @if (TempData["notice"] != null)
-    {
-        <p>@TempData["notice"]</p>
-    }
+    <style>
+        button {
+            color: black;
+        }
+    </style>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -29,18 +28,16 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Cart", "DisplayShoppingCart", "RegisteredUser")</li>
                     <li>@Html.ActionLink("Address", "CreateAddress", "RegisteredUser")</li>
+                    <li>@Html.ActionLink("Order History", "OrderHistoryPeople", "RegisteredUser")</li>
+                    <li>@using (Html.BeginForm("TestCallWalmart", "RegisteredUser", FormMethod.Get))
+                    {
+
+                        @Html.TextBox("search")<button type="submit">Search</button>
+                    }</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
-          @using (Html.BeginForm("TestCallWalmart", "RegisteredUser", FormMethod.Get))
-          {
-            <style>
-                button {
-                    color: black;
-                }
-            </style>
-            @Html.TextBox("search")<button type="submit">Search</button>
-          }
+         
         </div>
     </div>
     <div class="container body-content">
@@ -48,7 +45,7 @@
         <hr />
         <footer>
             @Html.ActionLink("Become Deliverer", "ApplyToDeliverer", "RegisteredUser")
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - ChipShip</p>
         </footer>
     </div>
 

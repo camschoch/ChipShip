@@ -23,5 +23,6 @@ namespace ChipShip.Models
     {
         public List<ApplicationUser> toBePaidUsers = new List<ApplicationUser>();
         public List<ToBePaid> toBePaid { get; set; }
+        public string userId { get; set; }
     }
 }

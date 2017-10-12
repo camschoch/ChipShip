@@ -2,32 +2,31 @@
 @{
     ViewBag.Title = "ToBePaid";
 }
-
-<h2>ToBePaid</h2>
-
+<br />
+<br />
+<br />
 <table class="table table-bordered table-responsive table-hover">
     <tr>
         <th>Results</th>
         <th>Price</th>
-        <th>Amount</th>
-        @*<th>Remove From Cart</th>*@
     </tr>
     @foreach (var d in Model.toBePaid)
     {
-       
+
             <tr>
                 <td>@Html.DisplayFor(temp => d.amount)</td>   
-                <td><form action="PayDeliverer" method="POST">
+                <td><form action="PayDeliverer" method="POST" >                    
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
             data-key="pk_test_m3POaZtysin2xxYNDrSU7Jy2"
             data-amount=""
             data-name="Demo Site"
             data-description="Widget"
             data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-            data-locale="auto">
-    </script>
+            data-locale="auto">   
+         @Html.HiddenFor(m => d.Id )           
+    </script>      
 </form>
                 </td>            
             </tr>        
-    }    
+    }
 </table>

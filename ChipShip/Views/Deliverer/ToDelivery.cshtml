@@ -2,9 +2,11 @@
 @{
     ViewBag.Title = "ToDelivery";
 }
+<br />
+<br />
+<br />
 @using (Html.BeginForm("FinishedOrder", "Deliverer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-<h2>ToDelivery</h2>
 
 <h2>@Model.UserName</h2>
 <h3>@Model.address</h3>

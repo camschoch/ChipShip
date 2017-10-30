@@ -109,7 +109,6 @@ namespace ChipShip.Controllers
         public ActionResult DisplayShoppingCart()
         {
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
-           // var currentOrder = context.Orders.Where(a => a.User.Id == currentUser.Id && a.completed == false).First();
             var orderAccepted = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();                   
             List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();          
             var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id).ToList();
@@ -140,12 +139,15 @@ namespace ChipShip.Controllers
             }
             try
             {
+                //FINISH PLUGGING IN PARAMETERS
                 var address = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == currentUser.Id).First();
                 var location = StaticClasses.StaticClasses.WalmartLocatorApi(address.Address.City.City, address.Address.Zip.zip.ToString());
-                string distanceObject = StaticClasses.StaticClasses.GoogleDistanceApi();
+                string userLat = StaticClasses.StaticClasses.GoogleGeoLocationApi(address.Address.addressLine, address.Address.Zip.zip)[0];
+                string userLng = StaticClasses.StaticClasses.GoogleGeoLocationApi(address.Address.addressLine, address.Address.Zip.zip)[1];
+                string distanceObject = StaticClasses.StaticClasses.GoogleDistanceApi(userLat, userLng, location.Coordinates[1].ToString(), location.Coordinates[0].ToString());
                 var hold = distanceObject.Split(' ');
                 var distance = double.Parse(hold[0]);
-                deliveryPrice += distance * 2.15;
+                deliveryPrice += distance * 2;
                 finalPrice = deliveryPrice + roundedPrice;
                 model.deliveryPrice = Math.Round(deliveryPrice, 2);
                 model.finalPrice = Math.Round(finalPrice, 2);
@@ -188,64 +190,6 @@ namespace ChipShip.Controllers
             {
                 return View("NoAddress");
             }
-        }
-        public ActionResult calculatePayment()
-        {
-            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();           
-            var orderAccepted = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();
-            List<List<ShoppingCartModel>> shoppingCarts = new List<List<ShoppingCartModel>>();
-            var myCartId = context.ShoppingcartJoin.Where(a => a.User.Id == currentUser.Id).ToList();
-            foreach (var item in myCartId)
-            {
-                shoppingCarts.Add(context.ShopingCarts.Where(a => a.Id == item.Id).ToList());
-            }
-            ViewShoppingCart model = new ViewShoppingCart();
-            model.shoppingCart = shoppingCarts;
-            double roundedPrice = 0;
-            foreach (var item in model.shoppingCart)
-            {
-                foreach (var thing in item)
-                {
-                    if (thing.amount > 1)
-                    {
-                        roundedPrice += thing.salePrices * thing.amount;
-                        model.TotalPrice = Math.Round(roundedPrice, 2);
-                    }
-                    else
-                    {
-                        roundedPrice += thing.salePrices;
-                        model.TotalPrice = Math.Round(roundedPrice, 2);
-                    }
-                }
-            }
-            var address = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == currentUser.Id).First();
-            var location = StaticClasses.StaticClasses.WalmartLocatorApi(address.Address.City.City, address.Address.Zip.zip.ToString());
-            string distanceObject = StaticClasses.StaticClasses.GoogleDistanceApi();
-            var hold = distanceObject.Split(' ');
-            var distance = double.Parse(hold[0]);
-            roundedPrice += distance * 2.15;
-            
-            return View("Index");
-        }
-        [HttpPost]
-        public ActionResult ProcessPayment()
-        {
-            //StripeConfiguration.SetApiKey("sk_test_MrrHmTID56LoiGaWtnXyAJit");
-
-            //// Token is created using Stripe.js or Checkout!
-            //// Get the payment token submitted by the form:
-            //var token = "tok_visa";
-
-            //// Charge the user's card:
-            //var charges = new StripeChargeService();
-            //var charge = charges.Create(new StripeChargeCreateOptions
-            //{
-            //    Amount = 1000,
-            //    Currency = "usd",
-            //    Description = "Example charge",
-            //    SourceTokenOrExistingSourceId = token
-            //});
-            return View("Test");
         }
         public ActionResult Payment()
         {
@@ -352,9 +296,8 @@ namespace ChipShip.Controllers
             var currentUser = context.Users.Where(a => a.UserName == User.Identity.Name).First();
             model.City = GetCity(model);
             model.Zip = GetZip(model);
-            model.Lattitude = StaticClasses.StaticClasses.GoogleGeoLocationApi(model.addressLine, model.Zip.zip, currentUser.Id)[0];
-            model.Longitude = StaticClasses.StaticClasses.GoogleGeoLocationApi(model.addressLine, model.Zip.zip, currentUser.Id)[1];
-            //model.Zone = StaticClasses.ApiCalls.CurrentZoneApi(model.Zip.zip.ToString());
+            model.Lattitude = StaticClasses.StaticClasses.GoogleGeoLocationApi(model.addressLine, model.Zip.zip)[0];
+            model.Longitude = StaticClasses.StaticClasses.GoogleGeoLocationApi(model.addressLine, model.Zip.zip)[1];
             var addresses = (from data in context.Addresses where data.addressLine == model.addressLine && data.City.City == model.City.City && data.Zip.zip == model.Zip.zip select data).ToList();
             if (addresses.Count > 0)
             {

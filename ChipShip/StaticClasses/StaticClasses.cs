@@ -35,12 +35,10 @@ namespace ChipShip.StaticClasses
             IRestResponse<ItemsItems> response = client.Execute<ItemsItems>(request);
 
         }
-        static public List<string> GoogleGeoLocationApi(string address, int zip, string userId)
+        static public List<string> GoogleGeoLocationApi(string address, int zip)
         {
             var formatted = address.Replace(" ", "+");
             List<string> location = new List<string>();
-            //1600%20Amphitheatre%20Parkway%2C%20Mountain%20View%2C%20CA
-            //address = "1600+Amphitheatre+Parkway+Mountain+View";
             var client = new RestClient("https://maps.googleapis.com/maps/api/geocode/json?address=" + formatted + "+" + zip.ToString() + "&key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co");
             var request = new RestRequest(Method.GET);
             request.AddHeader("postman-token", "a37a2571-49a6-362e-a4b1-54e5ff540d63");
@@ -72,9 +70,9 @@ namespace ChipShip.StaticClasses
             return null;
         }
         //string userLocation, string walmoartLocation
-        static public string GoogleDistanceApi()
+        static public string GoogleDistanceApi(string userLat, string userLng, string walmartLat, string walmartLng)
         {
-            var client = new RestClient("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101%2C-73.89188969999998&destinations=40.6905615%2C-73.9976592&key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co");
+            var client = new RestClient("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + userLat + "%2C" + userLng +"&destinations=" + walmartLat + "%2C" + walmartLng + "&key=AIzaSyAxfTfQ9EoYEotKPAfWCncS40aCDuV88co");
             var request = new RestRequest(Method.GET);
             request.AddHeader("postman-token", "619ff567-af23-8b90-6b95-946348249978");
             request.AddHeader("cache-control", "no-cache");

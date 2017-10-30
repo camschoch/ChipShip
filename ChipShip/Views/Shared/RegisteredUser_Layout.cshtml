@@ -10,6 +10,10 @@
         button {
             color: black;
         }
+        li.search{
+            padding-top:18px;
+        }
+        .searchbox
     </style>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -29,7 +33,7 @@
                     <li>@Html.ActionLink("Cart", "DisplayShoppingCart", "RegisteredUser")</li>
                     <li>@Html.ActionLink("Address", "CreateAddress", "RegisteredUser")</li>
                     <li>@Html.ActionLink("Order History", "OrderHistoryPeople", "RegisteredUser")</li>
-                    <li>@using (Html.BeginForm("TestCallWalmart", "RegisteredUser", FormMethod.Get))
+                    <li class="search">@using (Html.BeginForm("TestCallWalmart", "RegisteredUser", FormMethod.Get))
                     {
 
                         @Html.TextBox("search")<button type="submit">Search</button>

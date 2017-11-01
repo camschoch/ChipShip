@@ -13,8 +13,7 @@ namespace ChipShip.Controllers
 {
     public class AdminController : Controller
     {
-        ApplicationDbContext context;
-        // GET: Admin
+        ApplicationDbContext context;       
         public ActionResult Index()
         {
             return View();

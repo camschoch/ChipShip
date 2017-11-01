@@ -8,15 +8,15 @@
 <h3>Leave a rating here</h3>
 @using (Html.BeginForm("submitRating", "Deliverer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-    <p>One Star @Html.RadioButtonFor(m => m.rating, 1)</p>
+    <p>One Star   @Html.RadioButtonFor(m => m.rating, 1)</p>
 
-    <p>Two Star @Html.RadioButtonFor(m => m.rating, 2)</p>
+    <p>Two Star   @Html.RadioButtonFor(m => m.rating, 2)</p>
 
     <p>Three Star @Html.RadioButtonFor(m => m.rating, 3)</p>
 
-    <p>Four Star @Html.RadioButtonFor(m => m.rating, 4)</p>
+    <p>Four Star  @Html.RadioButtonFor(m => m.rating, 4)</p>
 
-    <p>Five Star @Html.RadioButtonFor(m => m.rating, 5)</p>
+    <p>Five Star  @Html.RadioButtonFor(m => m.rating, 5)</p>
 
     <div class="form-group">
         @Html.HiddenFor(m => m.userId)

@@ -139,7 +139,6 @@ namespace ChipShip.Controllers
             }
             try
             {
-                //FINISH PLUGGING IN PARAMETERS
                 var address = context.AddressJoin.Include("Address").Include("Address.Zip").Include("Address.City").Where(a => a.User.Id == currentUser.Id).First();
                 var location = StaticClasses.StaticClasses.WalmartLocatorApi(address.Address.City.City, address.Address.Zip.zip.ToString());
                 string userLat = StaticClasses.StaticClasses.GoogleGeoLocationApi(address.Address.addressLine, address.Address.Zip.zip)[0];
@@ -191,10 +190,6 @@ namespace ChipShip.Controllers
                 return View("NoAddress");
             }
         }
-        public ActionResult Payment()
-        {
-            return View();
-        }
         public ActionResult submitRating(FinisedOrderModel model)
         {
             var resetUser = context.OrderRequest.Include("User").Include("Deliverer").Where(a => a.User.Id == model.userId).First();
@@ -234,8 +229,7 @@ namespace ChipShip.Controllers
             }
             catch
             {
-                //NO PREVIOUS OORDERS
-                return View();
+                return View("NoPrieviousOrder");
             }
         }
         public ActionResult OrderHistory(string userId)
@@ -253,9 +247,7 @@ namespace ChipShip.Controllers
         }
         [HttpPost]
         public ActionResult SubmitOrder()
-        {
-            //NOT FINISHED
-
+        {            
             var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
             var address = context.AddressJoin.Include("Address").Where(a => a.User.Id == currentUser.Id).First();
             var myOrderId = context.OrderRequest.Where(a => a.User.Id == currentUser.Id).First();
@@ -263,6 +255,14 @@ namespace ChipShip.Controllers
             myOrderId.OrderAccepted = false;
             var myOrderStatus = context.OrderStatus.Where(a => a.User.Id == currentUser.Id).First();
             myOrderStatus.status = "Waiting to be approved by deliverer.";                        
+            context.SaveChanges();
+            return DisplayShoppingCart();
+        }
+        public ActionResult RemoveMessage()
+        {
+            var currentUser = context.Users.Where(b => b.UserName == User.Identity.Name).First();
+            var orderRequest = context.OrderRequest.Include("Deliverer").Where(a => a.User.Id == currentUser.Id).First();
+            orderRequest.message = null;
             context.SaveChanges();
             return DisplayShoppingCart();
         }
@@ -328,7 +328,6 @@ namespace ChipShip.Controllers
 
         private Cities GetCity(Address model)
         {
-            model.City.State = GetState(model);
             var cities = (from data in context.Cities where data.City == model.City.City && data.State.State == model.City.State.State select data).ToList();
             if (cities.Count > 0)
             {
@@ -339,19 +338,6 @@ namespace ChipShip.Controllers
                 context.Cities.Add(model.City);
                 context.SaveChanges();
                 return (from data in context.Cities where data.City == model.City.City && data.State.State == model.City.State.State select data).First();
-            }
-        }
-
-        private States GetState(Address model)
-        {
-            var States = (from data in context.States where data.State.ToLower() == model.City.State.State.ToLower() select data).ToList();
-            if (States.Count > 0)
-            {
-                return (from data in context.States where data.State.ToLower() == model.City.State.State.ToLower() select data).First();
-            }
-            else
-            {
-                return model.City.State;
             }
         }
     }
